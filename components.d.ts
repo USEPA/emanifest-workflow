@@ -16,7 +16,6 @@ declare module 'vue' {
     LabelField: typeof import('./src/components/LabelField.vue')['default']
     LabelRequired: typeof import('./src/components/LabelRequired.vue')['default']
     Manifest: typeof import('./src/components/Manifest.vue')['default']
-    Required: typeof import('./src/components/Required.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     StatusBar: typeof import('./src/components/StatusBar.vue')['default']
