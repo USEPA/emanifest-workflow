@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "deploy": "npm run build && gh-pages -d dist",
     "lint": "eslint . --fix"
   },
   "dependencies": {
@@ -21,6 +22,7 @@
     "@vitejs/plugin-vue": "^6.0.1",
     "eslint": "^9.35.0",
     "eslint-config-vuetify": "^4.2.0",
+    "gh-pages": "^6.3.0",
     "sass-embedded": "^1.92.1",
     "unplugin-auto-import": "^19.3.0",
     "unplugin-fonts": "^1.4.0",
