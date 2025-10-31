@@ -12,7 +12,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./src/components/AppFooter.vue')['default']
-    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     LabelField: typeof import('./src/components/LabelField.vue')['default']
     LabelRequired: typeof import('./src/components/LabelRequired.vue')['default']
     Manifest: typeof import('./src/components/Manifest.vue')['default']

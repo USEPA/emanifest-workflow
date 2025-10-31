@@ -37,7 +37,8 @@
                     <div v-for="header in headers" :key="header.key">
                         <div v-if="header.key == 'line'">Line {{ item[header.key] }}</div>
                         <div v-else>
-                             <label-field :name="`waste.${header.key}`" type="text" :overRideValue="item[header.key]"></label-field>
+                            <label-field :name="`waste.${header.key}`" type="text"
+                                :overRideValue="item[header.key]"></label-field>
                         </div>
                     </div>
                 </v-card-text>
@@ -54,8 +55,6 @@ const mobile = mdAndUp
 import { useAppStore } from '@/stores/app'
 const store = useAppStore();
 
-
-
 const headers = [
     { title: 'Line', key: 'line' },
     { title: '9a HM', key: 'haz' },
@@ -70,7 +69,7 @@ const headers = [
 const addedWastes = [{ line: 1, haz: 'X', description: 'UN1993 Waste', containerNumber: '0', containerType: 'DM', quantity: '0', uom: 'G', wasteCodes: ['D001', 'D002'] },
 { line: 2, haz: 'X', description: 'UN1993 Waste', containerNumber: '0', containerType: 'DM', quantity: '0', uom: 'G', wasteCodes: ['D001', 'D002'] }
 ]
-const wastes = ref(addedWastes)
+const wastes = reactive(addedWastes)
 
 const required = (name) => {
     const field = store.lookupField(`waste.${name}`)
@@ -80,10 +79,18 @@ const required = (name) => {
     return store.lookupStatusId(field.required) <= store.currentStep
 }
 
-const currentStep = computed(()=> store.currentStep)
-watch(currentStep, ()=>{
-    if(currentStep.value == store.lookupStatusId('Scheduled')){
-        wastes.value[0].containerNumber = 4
+const currentStep = computed(() => store.currentStep)
+watch(currentStep, () => {
+    if (currentStep.value >= store.lookupStatusId('Scheduled')) {
+        wastes[0].containerNumber = '4'
+        wastes[0].quantity = '200'
+        wastes[1].containerNumber = '3'
+        wastes[1].quantity = '150'
+    } else {
+        wastes[0].containerNumber = '0'
+        wastes[0].quantity = '0'
+        wastes[1].containerNumber = '0'
+        wastes[1].quantity = '0'
     }
 })
 

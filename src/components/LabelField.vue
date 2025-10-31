@@ -1,7 +1,7 @@
 <template>
     <label v-if="field.label" :for="field.id">{{ field.label }}</label>
     <v-icon icon="mdi-asterisk" size="x-small" color="red" v-if="required" class="pl-2 pb-2"></v-icon>
-    <v-text-field v-if="props.type == 'text'" :id="field.id" v-model="fieldValue" readonly variant="solo-filled">
+    <v-text-field v-if="props.type == 'text'" :id="field.id" v-model="internalValue" readonly variant="solo-filled">
         <template #append-inner>
             <v-tooltip v-if="locked" :text="readOnlyText" location="bottom">
                 <template v-slot:activator="{ props }">
@@ -11,7 +11,7 @@
             <span v-if="locked" class="sr-only">{{ readOnlyText }}</span>
         </template>
     </v-text-field>
-    <v-textarea v-if="props.type === 'textarea'" :id="field.id" v-model="fieldValue" rows="2" readonly no-resize
+    <v-textarea v-if="props.type === 'textarea'" :id="field.id" v-model="internalValue" rows="2" readonly no-resize
         variant="solo-filled">
         <template #append-inner>
             <v-tooltip v-if="locked" :text="readOnlyText" location="bottom">
@@ -31,18 +31,25 @@ const store = useAppStore();
 const props = defineProps({
     name: String,
     type: String,
-    overRideValue: { type: [String, Number], }
+    overRideValue: { type: [String, Number], default: null }
 })
 
 const readOnlyText = 'This field is read-only at this point in the workflow'
 
 const field = store.lookupField(props.name)
+console.log(field)
 
-const fieldValue = ref('')
-
-if (props.overRideValue) {
-    fieldValue.value = props.overRideValue
-}
+const internalValue = computed(() => {
+    if (!props.overRideValue) {
+        if (required.value) {
+            return field.value
+        } else {
+            return ''
+        }
+    } else {
+        return props.overRideValue
+    }
+});
 
 const required = computed(() => {
     if (field.hasOwnProperty('required')) {
@@ -53,19 +60,9 @@ const required = computed(() => {
 
 const locked = computed(() => {
     if (field.hasOwnProperty('locked')) {
-        return store.lookupStatusId(field.locked) < store.currentStep  + 1
+        return store.lookupStatusId(field.locked) < store.currentStep + 1
     }
     return false
-})
-
-watch(required, () => {
-    if (!props.overRideValue) {
-        if (required.value) {
-            fieldValue.value = field.value
-        } else {
-            fieldValue.value = ''
-        }
-    }
 })
 
 </script>
