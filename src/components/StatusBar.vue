@@ -89,14 +89,13 @@ const firstStep = computed(() => {
 })
 
 const lastStep = computed(() => {
-
     return store.currentStep === store.steps.length - 1
 })
 
 const { scrollY } = useScrollPosition();
 
 const showBanner = computed(() => {
-    return scrollY.value > 300; // Show the banner after scrolling
+    return scrollY.value > 290; // Show the banner after scrolling
 });
 
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <v-data-table :headers="headers" :items="wastes" item-key="line" hide-default-footer>
+    <v-data-table v-if="mobile" :headers="headers" :items="wastes" item-key="line" hide-default-footer>
         <template v-for="header in headers" #[`header.${header.key}`]="{ column }">
             <span :key="header.key">{{ column.title }}</span>
             <v-icon icon="mdi-asterisk" size="x-small" color="red" v-if="required(header.key)"
@@ -30,12 +30,26 @@
             </v-textarea>
         </template>
     </v-data-table>
+    <v-row v-else>
+        <v-col cols="12" v-for="(item, index) in wastes" :key="index">
+            <v-card>
+                <v-card-text>
+                    <div v-for="header in headers" :key="header.key">
+                        <div v-if="header.key == 'line'">Line {{ item[header.key] }}</div>
+                        <div v-else>
+                             <label-field :name="`waste.${header.key}`" type="text" :overRideValue="item[header.key]"></label-field>
+                        </div>
+                    </div>
+                </v-card-text>
+            </v-card>
+        </v-col>
+    </v-row>
 </template>
 <script setup>
-import { ref } from 'vue'
-//import { useDisplay } from 'vuetify'
-//const { smAndDown } = useDisplay()
-//const mobile = smAndDown
+import { ref, watch } from 'vue'
+import { useDisplay } from 'vuetify'
+const { mdAndUp } = useDisplay()
+const mobile = mdAndUp
 
 import { useAppStore } from '@/stores/app'
 const store = useAppStore();
@@ -46,24 +60,32 @@ const headers = [
     { title: 'Line', key: 'line' },
     { title: '9a HM', key: 'haz' },
     { title: '9b. U.S. DOT Description', key: 'description' },
-    { title: 'Container Number ', key: 'containerNumber' },
+    { title: 'Container Number', key: 'containerNumber' },
     { title: 'Container Type', key: 'containerType' },
     { title: 'Total Quantity', key: 'quantity' },
     { title: 'Unit Of Measure', key: 'uom' },
     { title: 'Waste Codes', key: 'wasteCodes' }
 ]
 
-const addedWastes = [{ line: 1, haz: 'X', description: 'UN1993 Waste', containerNumber: 0, containerType: 'DM', quantity: 0, uom: 'G', wasteCodes: ['D001', 'D002'] },
-{ line: 2, haz: 'X', description: 'UN1993 Waste', containerNumber: 0, containerType: 'DM', quantity: 0, uom: 'G', wasteCodes: ['D001', 'D002'] }
+const addedWastes = [{ line: 1, haz: 'X', description: 'UN1993 Waste', containerNumber: '0', containerType: 'DM', quantity: '0', uom: 'G', wasteCodes: ['D001', 'D002'] },
+{ line: 2, haz: 'X', description: 'UN1993 Waste', containerNumber: '0', containerType: 'DM', quantity: '0', uom: 'G', wasteCodes: ['D001', 'D002'] }
 ]
-const wastes = ref(addedWastes.map(r => ({ ...r })))
+const wastes = ref(addedWastes)
 
 const required = (name) => {
     const field = store.lookupField(`waste.${name}`)
     if (field.optional) {
         return false
     }
-    return store.lookupStatusId(field.required) <= store.currentStep + 1
+    return store.lookupStatusId(field.required) <= store.currentStep
 }
+
+const currentStep = computed(()=> store.currentStep)
+watch(currentStep, ()=>{
+    if(currentStep.value == store.lookupStatusId('Scheduled')){
+        wastes.value[0].containerNumber = 4
+    }
+})
+
 
 </script>

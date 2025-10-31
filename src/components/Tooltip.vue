@@ -38,7 +38,7 @@ const iconColor = computed(() => {
 
 const statusDisplay = computed(() => {
     if (props.status) {
-        return store.lookupStatusId(props.status) <= store.currentStep + 1
+        return store.lookupStatusId(props.status) <= store.currentStep
     }
     return true
 })

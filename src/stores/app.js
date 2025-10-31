@@ -39,55 +39,55 @@ export const useAppStore = defineStore('app', {
     ],
     currentStep: 0,
     fields: {
-      mtn: { id: 'mtn', label: 'Manifest Tracking Number', required: 'Pending', value: '123456789ELC', locked:'Pending' },
-      erPhone: { id: 'erPhone', label: 'Emergency Response Phone', required: 'Scheduled', value: '888-333-2224', locked:'GenSig' },
+      mtn: { id: 'mtn', label: 'Manifest Tracking Number', required: 'Pending', value: '123456789ELC', locked: 'Pending' },
+      erPhone: { id: 'erPhone', label: 'Emergency Response Phone', required: 'Scheduled', value: '888-333-2224', locked: 'GenSig' },
       generator: {
-        epaId: { id: 'genId', label: 'EPA ID Number', required: 'Scheduled', value: 'VA123456789', locked:'GenSig' },
-        name: { id: 'genName', label: 'Name', required: 'Scheduled', value: 'Test Generator', locked:'GenSig' },
-        phone: { id: 'genPhone', label: 'Generator\'s Phone', required: 'Scheduled', value: '555-333-3321', locked:'GenSig' },
-        mailingAddress: { id: 'genMailAddress', label: 'Mailing Address', required: 'Scheduled', value: '123 Main St \r Fairfax, VA 22033' , locked:'GenSig'},
-        siteAddress: { id: 'genSiteAddress', label: 'Site Address', required: 'Scheduled', value: '321 W Broad St \r Fairfax, VA 22033', locked:'GenSig' },
+        epaId: { id: 'genId', label: 'EPA ID Number', required: 'Scheduled', value: 'VA123456789', locked: 'GenSig' },
+        name: { id: 'genName', label: 'Name', required: 'Scheduled', value: 'Test Generator', locked: 'GenSig' },
+        phone: { id: 'genPhone', label: 'Generator\'s Phone', required: 'Scheduled', value: '555-333-3321', locked: 'GenSig' },
+        mailingAddress: { id: 'genMailAddress', label: 'Mailing Address', required: 'Scheduled', value: '123 Main St \r Fairfax, VA 22033', locked: 'GenSig' },
+        siteAddress: { id: 'genSiteAddress', label: 'Site Address', required: 'Scheduled', value: '321 W Broad St \r Fairfax, VA 22033', locked: 'GenSig' },
         signature: {
-          name: { id: 'genSigName', label: 'Name', required: 'GenSig', value: 'Gen Erator', locked:'GenSig' },
-          date: { id: 'genSigDate', label: 'Date', required: 'GenSig', value: '10/20/2025', locked:'GenSig' }
+          name: { id: 'genSigName', label: 'Name', required: 'GenSig', value: 'Gen Erator', locked: 'GenSig' },
+          date: { id: 'genSigDate', label: 'Date', required: 'GenSig', value: '10/20/2025', locked: 'GenSig' }
         }
       },
       transporter: {
         signature: {
-          name: { id: 'transporterSigName', label: 'Name', required: 'TSig', value: 'Trans Porter', locked:'TSig' },
-          date: { id: 'transporterSigDate', label: 'Date', required: 'TSig', value: '10/20/2025', locked:'TSig' }
+          name: { id: 'transporterSigName', label: 'Name', required: 'TSig', value: 'Trans Porter', locked: 'TSig' },
+          date: { id: 'transporterSigDate', label: 'Date', required: 'TSig', value: '10/20/2025', locked: 'TSig' }
         }
       },
       tsdf: {
-        epaId: { id: 'tsdfId', label: 'EPA ID Number', required: 'Scheduled', value: 'NC123456789', locked:'TsdfReceipt' },
-        name: { id: 'tsdfName', label: 'Name', required: 'Scheduled', value: 'Test TSDF', locked:'TsdfReceipt' },
-        phone: { id: 'tsdfPhone', label: 'Facility\'s Phone', required: 'Scheduled', value: '774-233-6643', locked:'TsdfReceipt' },
-        siteAddress: { id: 'tsdfSiteAddress', label: 'Site Address', required: 'Scheduled', value: '321 W Broad St \r Raleigh, NC 21155', locked:'TsdfReceipt' },
+        epaId: { id: 'tsdfId', label: 'EPA ID Number', required: 'Scheduled', value: 'NC123456789', locked: 'TsdfReceipt' },
+        name: { id: 'tsdfName', label: 'Name', required: 'Scheduled', value: 'Test TSDF', locked: 'TsdfReceipt' },
+        phone: { id: 'tsdfPhone', label: 'Facility\'s Phone', required: 'Scheduled', value: '774-233-6643', locked: 'TsdfReceipt' },
+        siteAddress: { id: 'tsdfSiteAddress', label: 'Site Address', required: 'Scheduled', value: '321 W Broad St \r Raleigh, NC 21155', locked: 'TsdfReceipt' },
         signature: {
-          name: { id: 'tsdfSigName', label: 'Name', required: 'TsdfReceipt', value: 'T SDF', locked:'TsdfReceipt'},
-          date: { id: 'tsdfSigDate', label: 'Date', required: 'TsdfReceipt', value: '10/25/2025', locked:'TsdfReceipt' }
+          name: { id: 'tsdfSigName', label: 'Name', required: 'TsdfReceipt', value: 'T SDF', locked: 'TsdfReceipt' },
+          date: { id: 'tsdfSigDate', label: 'Date', required: 'TsdfReceipt', value: '10/25/2025', locked: 'TsdfReceipt' }
         }
       },
       waste: {
         line: { optional: true },
-        haz: { required: 'Scheduled' },
-        description: { required: 'Scheduled' },
-        containerNumber: { required: 'Scheduled' },
-        containerType: { required: 'Scheduled' },
-        quantity: { required: 'Scheduled' },
-        uom: { required: 'Scheduled' },
-        wasteCodes: { required: 'Scheduled' }
+        haz: { id: 'haz', required: 'Scheduled', label: '9a HM' },
+        description: { id: 'dotDescription', required: 'Scheduled', label: '9b. U.S. DOT Description' },
+        containerNumber: { id: 'containerNumber', required: 'Scheduled', label: 'Container Number' },
+        containerType: { id: 'containerType', required: 'Scheduled', label: 'Container Type' },
+        quantity: { id: 'quantity', required: 'Scheduled', label: 'Total Quantity' },
+        uom: { id: 'uom', required: 'Scheduled', label: 'Unit Of Measure' },
+        wasteCodes: { id: 'wasteCodes', required: 'Scheduled', label: 'Waste Codes' }
       },
-       managemementMethod1: { id: 'managemementMethod1', label:"1", required: 'Submit', value: 'H040' },
-       managemementMethod2: { id: 'managemementMethod2', label:"2", required: 'Submit', value: 'H041' },
-       managemementMethod3: { id: 'managemementMethod3', label:"3", required: 'Submit', value: '' },
-       managemementMethod4: { id: 'managemementMethod4', label:"4",required: 'Submit', value: '' }
+      managemementMethod1: { id: 'managemementMethod1', label: "1", required: 'Submit', value: 'H040' },
+      managemementMethod2: { id: 'managemementMethod2', label: "2", required: 'Submit', value: 'H041' },
+      managemementMethod3: { id: 'managemementMethod3', label: "3", required: 'Submit', value: '' },
+      managemementMethod4: { id: 'managemementMethod4', label: "4", required: 'Submit', value: '' }
     },
-    tooltips:{
-      waste:'Draft waste information must be provided for the Scheduled status. Prior to Generator signing, the waste information needs to be finalized and uploaded',
-      generator:'If manifest type is Hybrid, the Generator signs on paper and the transporter is responsible for uploading prior to signing electronically',
-      wasteWarning:'Waste information generally should not be changed after generator signature with exception to situations allowed in the regulations',
-      tsdfWarning:'The designated facility generally should not be changed after generator signature with exception to situations allowed in the regulations'
+    tooltips: {
+      waste: 'Draft waste information must be provided for the Scheduled status. Prior to Generator signing, the waste information needs to be finalized and uploaded',
+      generator: 'If manifest type is Hybrid, the Generator signs on paper and the transporter is responsible for uploading prior to signing electronically',
+      wasteWarning: 'Waste information generally should not be changed after generator signature with exception to situations allowed in the regulations',
+      tsdfWarning: 'The designated facility generally should not be changed after generator signature with exception to situations allowed in the regulations'
     }
   }),
   getters: {
@@ -108,8 +108,7 @@ export const useAppStore = defineStore('app', {
       }
       return state.fields[field]
     },
-    getTooltip:(state) => (tip) =>{
-      console.log(tip)
+    getTooltip: (state) => (tip) => {
       return state.tooltips[tip]
     }
   },

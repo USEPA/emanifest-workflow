@@ -13,7 +13,7 @@ const props = defineProps({
 })
 
 const required = computed(() => {
-    if (store.lookupStatusId(props.status) <= store.currentStep + 1) {
+    if (store.lookupStatusId(props.status) <= store.currentStep) {
         return true
     }
     return false

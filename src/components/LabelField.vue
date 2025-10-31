@@ -11,7 +11,8 @@
             <span v-if="locked" class="sr-only">{{ readOnlyText }}</span>
         </template>
     </v-text-field>
-    <v-textarea v-if="props.type === 'textarea'" :id="field.id" v-model="fieldValue" rows="2" readonly no-resize variant="solo-filled">
+    <v-textarea v-if="props.type === 'textarea'" :id="field.id" v-model="fieldValue" rows="2" readonly no-resize
+        variant="solo-filled">
         <template #append-inner>
             <v-tooltip v-if="locked" :text="readOnlyText" location="bottom">
                 <template v-slot:activator="{ props }">
@@ -29,7 +30,8 @@ import { useAppStore } from '@/stores/app'
 const store = useAppStore();
 const props = defineProps({
     name: String,
-    type: String
+    type: String,
+    overRideValue: { type: [String, Number], }
 })
 
 const readOnlyText = 'This field is read-only at this point in the workflow'
@@ -37,6 +39,10 @@ const readOnlyText = 'This field is read-only at this point in the workflow'
 const field = store.lookupField(props.name)
 
 const fieldValue = ref('')
+
+if (props.overRideValue) {
+    fieldValue.value = props.overRideValue
+}
 
 const required = computed(() => {
     if (field.hasOwnProperty('required')) {
@@ -47,16 +53,18 @@ const required = computed(() => {
 
 const locked = computed(() => {
     if (field.hasOwnProperty('locked')) {
-        return store.lookupStatusId(field.locked) < store.currentStep + 1
+        return store.lookupStatusId(field.locked) < store.currentStep  + 1
     }
     return false
 })
 
 watch(required, () => {
-    if (required.value) {
-        fieldValue.value = field.value
-    } else {
-        fieldValue.value = ''
+    if (!props.overRideValue) {
+        if (required.value) {
+            fieldValue.value = field.value
+        } else {
+            fieldValue.value = ''
+        }
     }
 })
 
