@@ -43,7 +43,7 @@
 <style scoped>
 .banner-position {
     position: sticky;
-    top: 64px;
+    top: 0;
     /**use 64px if top menu bar doesn't hide on scroll. otherwise use 0 */
     z-index: 100;
     padding: 0px;
@@ -95,7 +95,7 @@ const lastStep = computed(() => {
 const { scrollY } = useScrollPosition();
 
 const showBanner = computed(() => {
-    return scrollY.value > 290; // Show the banner after scrolling
+    return scrollY.value > 300; // Show the banner after scrolling
 });
 
 </script>

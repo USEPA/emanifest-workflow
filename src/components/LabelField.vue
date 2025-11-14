@@ -41,7 +41,10 @@ console.log(field)
 
 const internalValue = computed(() => {
     if (!props.overRideValue) {
-        if (required.value) {
+        if (populate.value) {
+            return field.value
+        }
+        else if (required.value) {
             return field.value
         } else {
             return ''
@@ -54,6 +57,13 @@ const internalValue = computed(() => {
 const required = computed(() => {
     if (field.hasOwnProperty('required')) {
         return store.lookupStatusId(field.required) <= store.currentStep + 1
+    }
+    return false
+})
+
+const populate = computed(() => {
+    if (field.hasOwnProperty('populate')) {
+        return store.lookupStatusId(field.populate) <= store.currentStep + 1
     }
     return false
 })

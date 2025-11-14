@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar color="#3e6d9b">
+    <v-app-bar color="#3e6d9b"  v-if="showTopNav">
         <v-app-bar-title>e-Manifest Workflow</v-app-bar-title>
         <div class="mr-8">
             <v-icon-btn icon="mdi-help-circle" color="#3e6d9b" class="mx-2" @click="dialog = true"></v-icon-btn>
@@ -187,15 +187,12 @@
 
 import { ref, computed } from 'vue'
 import { useTheme } from 'vuetify'
+import { useScrollPosition } from '@/composables/useScrollPosition';
 import LabelRequired from './LabelRequired.vue';
 import LabelField from './LabelField.vue';
 import Tooltip from './Tooltip.vue';
 import StatusBar from './StatusBar.vue';
 import WasteInfo from './WasteInfo.vue';
-import { useAppStore } from '@/stores/app'
-const store = useAppStore();
-
-
 
 const theme = useTheme()
 const themeMode = computed(() => {
@@ -206,11 +203,15 @@ const themeMode = computed(() => {
     }
 })
 
+const { scrollY } = useScrollPosition();
+
+const showTopNav = computed(() => {
+    return scrollY.value < 10;
+});
+
 const dialog = ref(false)
 
-
 const addedTransporters = [{ order: 1, epaId: 'VA123', name: 'test' }, { order: 2, epaId: 'NC123', name: 'second' }]
-
 
 const transporters = ref(addedTransporters)
 

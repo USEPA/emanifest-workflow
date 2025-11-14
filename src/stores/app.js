@@ -6,11 +6,11 @@ export const useAppStore = defineStore('app', {
     steps: [
       {
         order: 1, value: 'Draft', status: 'Draft',
-        description: 'Nothing is really required except a site ID for one of the handlers to save and associate the manifest to. The manifest is accessible only to the site that creates it.'
+        description: 'At least one handler (generator, transporter, or designated facility) must be added to the manifest. The manifest is only accessible to the party that creates it.'
       },
       {
         order: 2, value: 'Pending', status: 'Pending',
-        description: 'At least one site must be added to the manifest. The manifest is shared with all parties selected on the manifest.'
+        description: 'At least one handler must be added to the manifest. The manifest is editable and viewable to all parties selected on the manifest.'
       },
       {
         order: 3, value: 'Scheduled', status: 'Scheduled',
@@ -40,13 +40,13 @@ export const useAppStore = defineStore('app', {
     currentStep: 0,
     fields: {
       mtn: { id: 'mtn', label: 'Manifest Tracking Number', required: 'Pending', value: '123456789ELC', locked: 'Pending' },
-      erPhone: { id: 'erPhone', label: 'Emergency Response Phone', required: 'Scheduled', value: '888-333-2224', locked: 'GenSig' },
+      erPhone: { id: 'erPhone', label: 'Emergency Response Phone', required: 'Scheduled', populate:'Draft', value: '888-333-2224', locked: 'GenSig' },
       generator: {
-        epaId: { id: 'genId', label: 'EPA ID Number', required: 'Scheduled', value: 'VA123456789', locked: 'GenSig' },
-        name: { id: 'genName', label: 'Name', required: 'Scheduled', value: 'Test Generator', locked: 'GenSig' },
-        phone: { id: 'genPhone', label: 'Generator\'s Phone', required: 'Scheduled', value: '555-333-3321', locked: 'GenSig' },
-        mailingAddress: { id: 'genMailAddress', label: 'Mailing Address', required: 'Scheduled', value: '123 Main St \r Fairfax, VA 22033', locked: 'GenSig' },
-        siteAddress: { id: 'genSiteAddress', label: 'Site Address', required: 'Scheduled', value: '321 W Broad St \r Fairfax, VA 22033', locked: 'GenSig' },
+        epaId: { id: 'genId', label: 'EPA ID Number', required: 'Scheduled', populate:'Draft', value: 'VA123456789', locked: 'GenSig' },
+        name: { id: 'genName', label: 'Name', required: 'Scheduled', value: 'Test Generator', populate:'Draft', locked: 'GenSig' },
+        phone: { id: 'genPhone', label: 'Generator\'s Phone', required: 'Scheduled', populate:'Draft', value: '555-333-3321', locked: 'GenSig' },
+        mailingAddress: { id: 'genMailAddress', label: 'Mailing Address', required: 'Scheduled', populate:'Draft', value: '123 Main St \r Fairfax, VA 22033', locked: 'GenSig' },
+        siteAddress: { id: 'genSiteAddress', label: 'Site Address', required: 'Scheduled', populate:'Draft', value: '321 W Broad St \r Fairfax, VA 22033', locked: 'GenSig' },
         signature: {
           name: { id: 'genSigName', label: 'Name', required: 'GenSig', value: 'Gen Erator', locked: 'GenSig' },
           date: { id: 'genSigDate', label: 'Date', required: 'GenSig', value: '10/20/2025', locked: 'GenSig' }
