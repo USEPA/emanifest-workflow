@@ -2,7 +2,7 @@
     <div v-if="statusDisplay">
         <v-tooltip interactive>
             <template v-slot:activator="{ props: activatorProps }">
-                <v-icon :icon="icon" v-bind="activatorProps" :color="iconColor"></v-icon>
+                <v-icon :icon="icon" v-bind="activatorProps" :color="iconColor" :aria-label="text"></v-icon>
             </template>
             <div>
                 {{ text }}

@@ -2,8 +2,8 @@
     <v-app-bar color="#3e6d9b"  v-if="showTopNav">
         <v-app-bar-title>e-Manifest Workflow</v-app-bar-title>
         <div class="mr-8">
-            <v-icon-btn icon="mdi-help-circle" color="#3e6d9b" class="mx-2" @click="dialog = true"></v-icon-btn>
-            <v-icon-btn :icon="themeMode" @click="theme.toggle()" color="#3e6d9b" class="mx-2"></v-icon-btn>
+            <v-icon-btn icon="mdi-help-circle" color="#3e6d9b" class="mx-2" @click="dialog = true" aria-label="Help"></v-icon-btn>
+            <v-icon-btn :icon="themeMode" @click="theme.toggle()" color="#3e6d9b" class="mx-2" aria-label="Change Theme"></v-icon-btn>
         </div>
     </v-app-bar>
     <v-dialog v-model="dialog" width="auto">
@@ -15,7 +15,7 @@
                 <p>Use the Previous and Next buttons to navigate between the events.</p>
             </v-card-text>
             <v-card-actions>
-                <v-btn class="ms-auto" text="Ok" @click="dialog = false"></v-btn>
+                <v-btn class="ms-auto" text="Ok" @click="dialog = false" aria-label="Ok"></v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>

@@ -5,28 +5,34 @@
             <v-icon icon="mdi-asterisk" size="x-small" color="red" v-if="required(header.key)"
                 class="pl-2 pb-2"></v-icon>
         </template>
-        <template #item.description="{ item }">
-            <v-textarea v-model="item.description" rows="2" readonly no-resize="true" variant="solo-filled">
+        <template #item.description="{ item, index }">
+            <v-textarea v-model="item.description" rows="2" readonly no-resize="true" variant="solo-filled"
+                :aria-label="labelValue('description', index)" :aria-describedby="undefined">
             </v-textarea>
         </template>
-        <template #item.containerNumber="{ item }">
-            <v-text-field v-model="item.containerNumber" readonly variant="solo-filled">
+        <template #item.containerNumber="{ item, index }">
+            <v-text-field v-model="item.containerNumber" readonly variant="solo-filled"
+                :aria-label="labelValue('containerNumber', index)" :aria-describedby="undefined">
             </v-text-field>
         </template>
-        <template #item.containerType="{ item }">
-            <v-text-field v-model="item.containerType" readonly variant="solo-filled">
+        <template #item.containerType="{ item, index }">
+            <v-text-field v-model="item.containerType" readonly variant="solo-filled" 
+            :aria-label="labelValue('containerType', index)" :aria-describedby="undefined">
             </v-text-field>
         </template>
-        <template #item.quantity="{ item }">
-            <v-text-field v-model="item.quantity" readonly variant="solo-filled">
+        <template #item.quantity="{ item, index }">
+            <v-text-field v-model="item.quantity" readonly variant="solo-filled" 
+            :aria-label="labelValue('quantity', index)" :aria-describedby="undefined">
             </v-text-field>
         </template>
-        <template #item.uom="{ item }">
-            <v-text-field v-model="item.uom" readonly variant="solo-filled">
+        <template #item.uom="{ item, index }">
+            <v-text-field v-model="item.uom" readonly variant="solo-filled" 
+            :aria-label="labelValue('uom', index)" :aria-describedby="undefined">
             </v-text-field>
         </template>
-        <template #item.wasteCodes="{ item }">
-            <v-textarea v-model="item.wasteCodes" rows="2" readonly no-resize="true" variant="solo-filled">
+        <template #item.wasteCodes="{ item, index }">
+            <v-textarea v-model="item.wasteCodes" rows="2" readonly no-resize="true" variant="solo-filled" 
+            :aria-label="labelValue('wasteCodes', index)" :aria-describedby="undefined">
             </v-textarea>
         </template>
     </v-data-table>
@@ -47,7 +53,7 @@
     </v-row>
 </template>
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { useDisplay } from 'vuetify'
 const { mdAndUp } = useDisplay()
 const mobile = mdAndUp
@@ -65,6 +71,11 @@ const headers = [
     { title: 'Unit Of Measure', key: 'uom' },
     { title: 'Waste Codes', key: 'wasteCodes' }
 ]
+
+const labelValue = (key, index) => {
+    const header = headers.find(item => item.key === key);
+    return header ? `${header.title} - ${index + 1}` : null;
+}
 
 const addedWastes = [{ line: 1, haz: 'X', description: 'UN1993 Waste', containerNumber: '0', containerType: 'DM', quantity: '0', uom: 'G', wasteCodes: ['D001', 'D002'] },
 { line: 2, haz: 'X', description: 'UN1993 Waste', containerNumber: '0', containerType: 'DM', quantity: '0', uom: 'G', wasteCodes: ['D001', 'D002'] }
