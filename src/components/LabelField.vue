@@ -1,6 +1,10 @@
 <template>
-    <label v-if="field.label" :for="field.id">{{ field.label }}</label>
-    <v-icon icon="mdi-asterisk" size="x-small" color="red" v-if="required" class="pl-2 pb-2"></v-icon>
+    <div class="d-flex align-center">
+        <label v-if="field.label" :for="field.id">{{ field.label }}</label>
+        <tooltip v-if="props.tooltipInfo" :tipLocation="props.tooltipInfo.tipLocation" :type="props.tooltipInfo.type"
+            :status="props.tooltipInfo.status"></tooltip>
+        <v-icon icon="mdi-asterisk" size="x-small" color="red" v-if="required" class="pl-2 pb-2"></v-icon>
+    </div>
     <v-text-field v-if="props.type == 'text'" :id="field.id" v-model="internalValue" readonly variant="solo-filled">
         <template #append-inner>
             <v-tooltip v-if="locked" :text="readOnlyText" location="bottom">
@@ -24,20 +28,26 @@
     </v-textarea>
 </template>
 <script setup>
-import { computed, ref, watch } from 'vue'
+/**
+ * This component is used to display a label, required asterisk and accompanying textfield or textarea
+ * The name prop points to the specific field in the store file which will pull the full properties for the field including id, label, required, value, locked, populate
+ * Optionally there is an overRideValue prop that will populate the value that is passed into it
+ * Optionally there is tooltipInfo prop - if provided this will display the tooltip component and need the standard props supplied to it coming from the parent
+ */
+import { computed } from 'vue'
 import { useAppStore } from '@/stores/app'
 
 const store = useAppStore();
 const props = defineProps({
     name: String,
     type: String,
-    overRideValue: { type: [String, Number], default: null }
+    overRideValue: { type: [String, Number], default: null },
+    tooltipInfo: Object
 })
 
 const readOnlyText = 'This field is read-only at this point in the workflow'
 
 const field = store.lookupField(props.name)
-console.log(field)
 
 const internalValue = computed(() => {
     if (!props.overRideValue) {

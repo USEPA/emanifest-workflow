@@ -3,6 +3,10 @@
     <v-icon icon="mdi-asterisk" size="x-small" color="red" v-if="required" class="pl-2"></v-icon>
 </template>
 <script setup>
+/**
+ * This component is used to display a label and required asterisk
+ * the props to provide are label and status
+ */
 import { computed } from 'vue'
 import { useAppStore } from '@/stores/app'
 

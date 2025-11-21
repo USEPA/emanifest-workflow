@@ -53,7 +53,7 @@
     </v-row>
 </template>
 <script setup>
-import { ref, watch, computed } from 'vue'
+import { watch, computed } from 'vue'
 import { useDisplay } from 'vuetify'
 const { mdAndUp } = useDisplay()
 const mobile = mdAndUp
@@ -90,6 +90,7 @@ const required = (name) => {
     return store.lookupStatusId(field.required) <= store.currentStep
 }
 
+//popualates the waste container and quantity values at scheduled
 const currentStep = computed(() => store.currentStep)
 watch(currentStep, () => {
     if (currentStep.value >= store.lookupStatusId('Scheduled')) {

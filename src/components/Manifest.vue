@@ -10,7 +10,7 @@
         <v-card max-width="600">
             <v-card-title><v-icon icon="mdi-help-circle"></v-icon> Help</v-card-title>
             <v-card-text>
-                <p>This tool demonstrates the electronic manifest workflow to show when information is required and can
+                <p>This interactive tool demonstrates the electronic manifest workflow to show when information is required and is able to
                     be edited.</p>
                 <p>Use the Previous and Next buttons to navigate between the events.</p>
             </v-card-text>
@@ -26,10 +26,10 @@
         <v-container class="ma-0 pa-4">
             <v-row>
                 <v-col cols="12" md="4">
-                    <LabelField name="mtn" type="text"></LabelField>
+                    <label-field name="mtn" type="text" :tooltipInfo="{tipLocation:'mtn', type:'info'}"></label-field>
                 </v-col>
                 <v-col cols="12" md="4">
-                    <LabelField name="erPhone" type="text"></LabelField>
+                    <label-field name="erPhone" type="text"></label-field>
                 </v-col>
             </v-row>
         </v-container>
@@ -61,7 +61,7 @@
         <v-divider></v-divider>
         <v-container class="ma-0 pa-4">
             <div class="d-flex align-center">
-                <h2 class="my-2">Transporter Information</h2> <label-required status="Scheduled" class></label-required>
+                <h2 class="my-2">Transporter Information</h2> <tooltip tipLocation="transporters" type="info"></tooltip> <label-required status="Scheduled" class></label-required>
             </div>
             <v-table>
                 <thead>
@@ -211,7 +211,7 @@ const showTopNav = computed(() => {
 
 const dialog = ref(false)
 
-const addedTransporters = [{ order: 1, epaId: 'VA123', name: 'test' }, { order: 2, epaId: 'NC123', name: 'second' }]
+const addedTransporters = [{ order: 1, epaId: 'NCD123456789', name: 'Test Transporter Company' }, { order: 2, epaId: 'NCD311567890', name: 'Test Hauling Co' }]
 
 const transporters = ref(addedTransporters)
 
