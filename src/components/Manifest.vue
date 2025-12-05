@@ -1,42 +1,26 @@
 <template>
-    <v-app-bar color="#3e6d9b"  v-if="showTopNav">
-        <v-app-bar-title>e-Manifest Workflow</v-app-bar-title>
-        <div class="mr-8">
-            <v-icon-btn icon="mdi-help-circle" color="#3e6d9b" class="mx-2" @click="dialog = true" aria-label="Help"></v-icon-btn>
-            <v-icon-btn :icon="themeMode" @click="theme.toggle()" color="#3e6d9b" class="mx-2" aria-label="Change Theme"></v-icon-btn>
-        </div>
-    </v-app-bar>
-    <v-dialog v-model="dialog" width="auto">
-        <v-card max-width="600">
-            <v-card-title><v-icon icon="mdi-help-circle"></v-icon> Help</v-card-title>
-            <v-card-text>
-                <p>This interactive tool demonstrates the electronic manifest workflow to show when information is required and is able to
-                    be edited.</p>
-                <p>Use the Previous and Next buttons to navigate between the events.</p>
-            </v-card-text>
-            <v-card-actions>
-                <v-btn class="ms-auto" text="Ok" @click="dialog = false" aria-label="Ok"></v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
+    <!--navigation bar-->
+    <nav-bar></nav-bar>
+
     <!--status bar-->
     <status-bar></status-bar>
 
+    <!--main content-->
     <v-sheet :elevation="4" class="mx-12 my-3 pa-0" rounded="xl">
         <v-container class="ma-0 pa-4">
             <v-row>
                 <v-col cols="12" md="4">
-                    <label-field name="mtn" type="text" :tooltipInfo="{tipLocation:'mtn', type:'info'}"></label-field>
+                    <label-field name="mtn" type="text"
+                        :tooltipInfo="{ tipLocation: 'mtn', type: 'info' }"></label-field>
                 </v-col>
                 <v-col cols="12" md="4">
                     <label-field name="erPhone" type="text"></label-field>
                 </v-col>
             </v-row>
         </v-container>
-
         <v-divider></v-divider>
         <v-container class="ma-0 pa-4">
-            <h2 class="my-2">Generator Information</h2>
+            <h2 class="my-2">1-5. Generator Information</h2>
             <v-row>
                 <v-col cols="12" md="4">
                     <label-field name="generator.epaId" type="text"></label-field>
@@ -61,7 +45,9 @@
         <v-divider></v-divider>
         <v-container class="ma-0 pa-4">
             <div class="d-flex align-center">
-                <h2 class="my-2">Transporter Information</h2> <tooltip tipLocation="transporters" type="info"></tooltip> <label-required status="Scheduled" class></label-required>
+                <h2 class="my-2">6-7. Transporter Information</h2>
+                <tooltip tipLocation="transporters" type="info"></tooltip> 
+                <label-required status="Scheduled" class></label-required>
             </div>
             <v-table>
                 <thead>
@@ -89,7 +75,7 @@
         <v-divider></v-divider>
         <v-container class="ma-0 pa-4">
             <div class="d-flex align-center">
-                <h2 class="my-2">Designated Facility Information</h2>
+                <h2 class="my-2">8. Designated Facility Information</h2>
                 <tooltip tipLocation="tsdfWarning" type="warning" status="TSig"></tooltip>
             </div>
 
@@ -114,9 +100,8 @@
         <v-divider></v-divider>
         <v-container class="ma-0 pa-4" fluid>
             <div class="d-flex align-center">
-                <h2 class="my-2">Waste Information </h2>
-                <tooltip tipLocation="waste" type="info">
-                </tooltip>
+                <h2 class="my-2">9-13. Waste Information </h2>
+                <tooltip tipLocation="waste" type="info"></tooltip>
                 <tooltip tipLocation="wasteWarning" type="warning" status="TSig"></tooltip>
             </div>
             <!--waste table-->
@@ -185,31 +170,14 @@
 </template>
 <script setup>
 
-import { ref, computed } from 'vue'
-import { useTheme } from 'vuetify'
-import { useScrollPosition } from '@/composables/useScrollPosition';
+import { ref } from 'vue'
+
 import LabelRequired from './LabelRequired.vue';
 import LabelField from './LabelField.vue';
 import Tooltip from './Tooltip.vue';
 import StatusBar from './StatusBar.vue';
 import WasteInfo from './WasteInfo.vue';
-
-const theme = useTheme()
-const themeMode = computed(() => {
-    if (theme.global.current.value.dark) {
-        return 'mdi-white-balance-sunny'
-    } else {
-        return 'mdi-weather-night'
-    }
-})
-
-const { scrollY } = useScrollPosition();
-
-const showTopNav = computed(() => {
-    return scrollY.value < 10;
-});
-
-const dialog = ref(false)
+import NavBar from './NavBar.vue';
 
 const addedTransporters = [{ order: 1, epaId: 'NCD123456789', name: 'Test Transporter Company' }, { order: 2, epaId: 'NCD311567890', name: 'Test Hauling Co' }]
 

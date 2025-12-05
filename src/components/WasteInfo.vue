@@ -87,7 +87,7 @@ const required = (name) => {
     if (field.optional) {
         return false
     }
-    return store.lookupStatusId(field.required) <= store.currentStep
+    return store.lookupStatusId(field.required) <= store.currentStep +1 
 }
 
 //popualates the waste container and quantity values at scheduled
