@@ -6,6 +6,9 @@
                 aria-label="Help"></v-icon-btn>
             <v-icon-btn :icon="themeMode" @click="theme.toggle()" color="#3e6d9b" class="mx-2"
                 aria-label="Change Theme"></v-icon-btn>
+            <v-icon-btn icon="mdi-list-box-outline" color="#3e6d9b" to="/"></v-icon-btn>
+            <v-icon-btn icon="mdi-assistant" color="#3e6d9b" to="/Wizard"></v-icon-btn>
+
             <v-menu>
                 <template v-slot:activator="{ props }">
                     <v-icon-btn icon="mdi-dots-vertical" color="#3e6d9b" v-bind="props"></v-icon-btn>

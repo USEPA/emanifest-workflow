@@ -13,7 +13,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     LabelField: typeof import('./src/components/LabelField.vue')['default']
     LabelRequired: typeof import('./src/components/LabelRequired.vue')['default']
-    Manifest: typeof import('./src/components/Manifest.vue')['default']
+    Manifest: typeof import('./src/pages/Manifest.vue')['default']
     NavBar: typeof import('./src/components/NavBar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

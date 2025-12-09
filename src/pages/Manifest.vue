@@ -1,7 +1,4 @@
 <template>
-    <!--navigation bar-->
-    <nav-bar></nav-bar>
-
     <!--status bar-->
     <status-bar></status-bar>
 
@@ -172,12 +169,11 @@
 
 import { ref } from 'vue'
 
-import LabelRequired from './LabelRequired.vue';
-import LabelField from './LabelField.vue';
-import Tooltip from './Tooltip.vue';
-import StatusBar from './StatusBar.vue';
-import WasteInfo from './WasteInfo.vue';
-import NavBar from './NavBar.vue';
+import LabelRequired from '../components/LabelRequired.vue';
+import LabelField from '../components/LabelField.vue';
+import Tooltip from '../components/Tooltip.vue';
+import StatusBar from '../components/StatusBar.vue';
+import WasteInfo from '../components/WasteInfo.vue';
 
 const addedTransporters = [{ order: 1, epaId: 'NCD123456789', name: 'Test Transporter Company' }, { order: 2, epaId: 'NCD311567890', name: 'Test Hauling Co' }]
 
