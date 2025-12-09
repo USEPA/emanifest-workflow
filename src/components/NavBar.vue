@@ -6,9 +6,9 @@
                 aria-label="Help"></v-icon-btn>
             <v-icon-btn :icon="themeMode" @click="theme.toggle()" color="#3e6d9b" class="mx-2"
                 aria-label="Change Theme"></v-icon-btn>
-            <v-icon-btn icon="mdi-list-box-outline" color="#3e6d9b" to="/"></v-icon-btn>
-            <v-icon-btn icon="mdi-assistant" color="#3e6d9b" to="/Wizard"></v-icon-btn>
-
+            
+            <RouterLink to="/"><v-icon-btn icon="mdi-list-box-outline" color="#3e6d9b" ></v-icon-btn></RouterLink>
+            <RouterLink  to="/wizard"><v-icon-btn icon="mdi-assistant" color="#3e6d9b"> </v-icon-btn></RouterLink >
             <v-menu>
                 <template v-slot:activator="{ props }">
                     <v-icon-btn icon="mdi-dots-vertical" color="#3e6d9b" v-bind="props"></v-icon-btn>
@@ -41,6 +41,7 @@ import { ref, computed } from 'vue'
 import { useTheme } from 'vuetify'
 import { useScrollPosition } from '@/composables/useScrollPosition';
 import { useAppStore } from '@/stores/app'
+import { RouterLink } from 'vue-router';
 
 const theme = useTheme()
 const store = useAppStore();
