@@ -90,6 +90,8 @@ export const useAppStore = defineStore('app', {
       transporters: 'Additional transporters may be added before and after the waste ships up until before the final receiving facility signs the manifest for waste receipt',
       wasteWarning: 'Waste information generally should not be changed after generator signature with exception to situations allowed in the regulations',
       tsdfWarning: 'The designated facility generally should not be changed after generator signature with exception to situations allowed in the regulations',
+      workflowHeading:'This page demonstrates when information is required and is able to be edited on the manifest. Use the Previous and Next buttons to navigate between the events.',
+      wizardHeading:'This page provides general guidance and does not cover all scenarios. Please consult the regulations and system documentation for futher information.'
     },
     linksMenu: [
       { text: 'RCRAInfo Production', url: 'https://rcrainfo.epa.gov/' },

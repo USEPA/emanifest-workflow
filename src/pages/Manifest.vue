@@ -1,4 +1,8 @@
 <template>
+     <div class="d-flex align-center justify-center">
+        <div class="text-h5 mr-2">Manifest Form Workflow </div>
+        <tooltip tipLocation="workflowHeading" type="info"></tooltip>
+    </div>
     <!--status bar-->
     <status-bar></status-bar>
 
@@ -44,7 +48,7 @@
             <div class="d-flex align-center">
                 <h2 class="my-2">6-7. Transporter Information</h2>
                 <tooltip tipLocation="transporters" type="info"></tooltip> 
-                <label-required status="Scheduled" class></label-required>
+                <label-required status="Scheduled"></label-required>
             </div>
             <v-table>
                 <thead>
@@ -75,7 +79,6 @@
                 <h2 class="my-2">8. Designated Facility Information</h2>
                 <tooltip tipLocation="tsdfWarning" type="warning" status="TSig"></tooltip>
             </div>
-
             <v-row>
                 <v-col cols="12" md="4">
                     <label-field name="tsdf.epaId" type="text"></label-field>
@@ -104,6 +107,7 @@
             <!--waste table-->
             <waste-info></waste-info>
         </v-container>
+        <v-divider></v-divider>
         <v-container class="ma-0 pa-4">
             <div class="d-flex align-center">
                 <h2 class="my-2">15. Generator Signature Information </h2>
@@ -118,8 +122,9 @@
                 </v-col>
             </v-row>
         </v-container>
+        <v-divider></v-divider>
         <v-container class="ma-0 pa-4">
-            <h2 class="my-2">17. Transporter Signature Information </h2>
+            <h2 class="my-2">17. Transporter Acknowledgment of Receipt of Materials </h2>
             <v-row>
                 <v-col cols="12" md="4">
                     <label-field name="transporter.signature.name" type="text"></label-field>
@@ -129,14 +134,18 @@
                 </v-col>
             </v-row>
         </v-container>
+        <v-divider></v-divider>
         <v-container class="ma-0 pa-4">
-            <h2 class="my-2">Discrepancy Information </h2>
+            <h2 class="my-2"> 18. Discrepancy, Residue and Rejection Information </h2>
             <v-row>
-
+                 <v-col cols="12">
+                    Discrepancy, residue and rejection information is not currently covered on this page.
+                </v-col>
             </v-row>
         </v-container>
+        <v-divider></v-divider>
         <v-container class="ma-0 pa-4">
-            <h2 class="my-2">19. Management Method Codes </h2>
+            <h2 class="my-2">19. Hazardous Waste Management Method Codes </h2>
             <v-row> <v-col cols="6" md="3">
                     <label-field name="managemementMethod1" type="text"></label-field>
                 </v-col>
@@ -150,10 +159,10 @@
                     <label-field name="managemementMethod4" type="text"></label-field>
                 </v-col>
             </v-row>
-
         </v-container>
+        <v-divider></v-divider>
         <v-container class="ma-0 pa-4">
-            <h2 class="my-2">TSDF Signature Information </h2>
+            <h2 class="my-2">20. Designated Facility Owner or Operator </h2>
             <v-row>
                 <v-col cols="12" md="4">
                     <label-field name="tsdf.signature.name" type="text"></label-field>

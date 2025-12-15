@@ -1,6 +1,6 @@
 <template>
     <div v-if="statusDisplay">
-        <v-tooltip interactive :aria-label="text">
+        <v-tooltip interactive location="top" :aria-label="text">
             <template v-slot:activator="{ props: activatorProps }">
                 <v-icon :icon="icon" v-bind="activatorProps" :color="iconColor"></v-icon>
             </template>
