@@ -4,17 +4,20 @@
         <tooltip tipLocation="wizardHeading" type="info"></tooltip>
     </div>
     <v-card :width="baseWidth" title="Basic Information" class="mx-auto px-4 my-4">
-        <v-select label="Who is creating the manifest electronically?" :items="parties" item-title="text"
-            item-value="value" v-model="selectedParty" return-object></v-select>
-        <v-select label="How are they creating it?" :items="createMethods" item-title="text" item-value="value"
-            v-model="selectedCreateMethod" return-object></v-select>
-        <v-select label="How is the generator signing?" :items="genSigMethods" item-title="text" item-value="value"
-            v-model="selectedSigMethod" return-object></v-select>
-        <v-select label="Is there more than 1 transporter?" :items="['Yes', 'No']" v-model="selectedTransporter"
-            return-object></v-select>
+        <v-card-subtitle>Answer all questions below to view the workflow steps.</v-card-subtitle>
+        <v-card-text>
+            <v-select label="Who is creating the manifest electronically?" :items="parties" item-title="text"
+                item-value="value" v-model="selectedParty" return-object></v-select>
+            <v-select label="How are they creating it?" :items="createMethods" item-title="text" item-value="value"
+                v-model="selectedCreateMethod" return-object></v-select>
+            <v-select label="How is the generator signing?" :items="genSigMethods" item-title="text" item-value="value"
+                v-model="selectedSigMethod" return-object></v-select>
+            <v-select label="Is there more than 1 transporter?" :items="['Yes', 'No']" v-model="selectedTransporter"
+                return-object></v-select>
+        </v-card-text>
     </v-card>
     <div v-if="allFieldsFilled">
-        <v-card :width="baseWidth" title="Here's How the Process Works for this Scenario" class="mx-auto px-4 my-4"
+        <v-card :width="baseWidth" title="Here's how the process works for this scenario" class="mx-auto px-4 my-4"
             v-if="selectedParty && selectedCreateMethod && selectedSigMethod">
             <v-card-text>
                 <h3>Prerequisites</h3>
@@ -124,9 +127,10 @@
             <v-card-text>
                 Copies can be printed from e-Manifest or directly from another system using EPA's template.
                 If you have your own system and would like to populate the manifest copy directly, download EPA's
-                manifest and continuation sheet <a href="https://github.com/USEPA/e-manifest/tree/master/Services-Information/Shipping-Paper-PDF"
-                    target="_blank">templates <v-icon icon="mdi-open-in-new"
-                                size="18"></v-icon></a>. Then configure your system to
+                manifest and continuation sheet <a
+                    href="https://github.com/USEPA/e-manifest/tree/master/Services-Information/Shipping-Paper-PDF"
+                    target="_blank">templates <v-icon icon="mdi-open-in-new" size="18"></v-icon></a>. Then configure
+                your system to
                 populate these documents.
             </v-card-text>
             <v-card-actions>
@@ -206,19 +210,21 @@ const step3 = computed(() => {
     return `Print ${copies} of the manifest`
 })
 
+const dataEditText = 'Data edits must be submitted to match shipment actuals prior to signing.'
+
 const step4 = computed(() => {
     if (selectedSigMethod.value.value === 'paper') {
-        return 'Generator and initial transporter sign paper manifest copy.'
+        return 'Generator and initial transporter sign paper manifest copy. Generator keeps this copy for their recordkeeping requirements.' 
     } else {
-        return 'Generator signs electronically.'
+        return 'Generator signs electronically. ' + dataEditText
     }
 })
 
 const step5 = computed(() => {
     if (selectedSigMethod.value.value === 'paper') {
-        return 'Initial transporter signs manifest electronically. Prior to signature, the transporter must upload any data edits to e-Manifest.'
+        return 'Initial transporter signs manifest electronically. ' + dataEditText
     } else {
-        return 'Initial transporter signs manifest electronically.'
+        return 'Initial transporter signs manifest electronically. '
     }
 })
 

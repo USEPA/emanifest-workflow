@@ -11,6 +11,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Footer: typeof import('./src/components/Footer.vue')['default']
     LabelField: typeof import('./src/components/LabelField.vue')['default']
     LabelRequired: typeof import('./src/components/LabelRequired.vue')['default']
     NavBar: typeof import('./src/components/NavBar.vue')['default']

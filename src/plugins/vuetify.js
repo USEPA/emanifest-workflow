@@ -16,6 +16,13 @@ import { createVuetify } from 'vuetify'
 export default createVuetify({
   theme: {
     defaultTheme: 'system',
+    themes:{
+      light: {
+        colors: {
+          background: '#F5F5F5', 
+        }
+      }
+    }
   },
   components: {
     VIconBtn,

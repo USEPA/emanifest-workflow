@@ -90,15 +90,15 @@ export const useAppStore = defineStore('app', {
       transporters: 'Additional transporters may be added before and after the waste ships up until before the final receiving facility signs the manifest for waste receipt',
       wasteWarning: 'Waste information generally should not be changed after generator signature with exception to situations allowed in the regulations',
       tsdfWarning: 'The designated facility generally should not be changed after generator signature with exception to situations allowed in the regulations',
-      workflowHeading:'This page demonstrates when information is required and is able to be edited on the manifest. Use the Previous and Next buttons to navigate between the events.',
-      wizardHeading:'This page provides general guidance and does not cover all scenarios. Please consult the regulations and system documentation for futher information.'
+      workflowHeading: 'This page demonstrates when information is required and is able to be edited on the manifest. Use the Previous and Next buttons to navigate between the events.',
+      wizardHeading: 'This page provides general guidance and does not cover all scenarios. Please consult the regulations and system documentation for futher information.'
     },
     linksMenu: [
       { text: 'RCRAInfo Production', url: 'https://rcrainfo.epa.gov/' },
       { text: 'RCRAInfo Pre-Production (Test)', url: 'https://rcrainfopreprod.epa.gov/' },
       { text: 'System Demo Videos', url: 'https://www.epa.gov/e-manifest/e-manifest-demonstration-videos' },
       { text: 'Industry Help', url: 'https://rcrainfo.epa.gov/rcrainfo-help/application/industryHelp/index.htm#t=SiteDashboard%2FEManifest%2FUG-eManifestIntroduction.htm' },
-      { text: 'FAQs', url:'https://www.epa.gov/e-manifest/frequent-questions-about-e-manifest'}
+      { text: 'FAQs', url: 'https://www.epa.gov/e-manifest/frequent-questions-about-e-manifest' }
     ]
   }),
   getters: {
@@ -124,5 +124,8 @@ export const useAppStore = defineStore('app', {
     }
   },
   actions: {
+    resetSteps() {
+      this.currentStep = 0
+    }
   }
 })

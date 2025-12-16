@@ -1,5 +1,5 @@
 <template>
-     <div class="d-flex align-center justify-center">
+    <div class="d-flex align-center justify-center">
         <div class="text-h5 mr-2">Manifest Form Workflow </div>
         <tooltip tipLocation="workflowHeading" type="info"></tooltip>
     </div>
@@ -47,7 +47,7 @@
         <v-container class="ma-0 pa-4">
             <div class="d-flex align-center">
                 <h2 class="my-2">6-7. Transporter Information</h2>
-                <tooltip tipLocation="transporters" type="info"></tooltip> 
+                <tooltip tipLocation="transporters" type="info"></tooltip>
                 <label-required status="Scheduled"></label-required>
             </div>
             <v-table>
@@ -138,7 +138,7 @@
         <v-container class="ma-0 pa-4">
             <h2 class="my-2"> 18. Discrepancy, Residue and Rejection Information </h2>
             <v-row>
-                 <v-col cols="12">
+                <v-col cols="12">
                     Discrepancy, residue and rejection information is not currently covered on this page.
                 </v-col>
             </v-row>
@@ -175,8 +175,16 @@
     </v-sheet>
 </template>
 <script setup>
-
 import { ref } from 'vue'
+
+import { onBeforeRouteLeave } from 'vue-router';
+import { useAppStore } from '@/stores/app';
+
+const store = useAppStore()
+
+onBeforeRouteLeave(() => {
+    store.resetSteps()
+})
 
 import LabelRequired from '../components/LabelRequired.vue';
 import LabelField from '../components/LabelField.vue';

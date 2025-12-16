@@ -4,6 +4,7 @@
     <v-main>
       <router-view/>
     </v-main>
+   <v-footer><v-btn  variant="text" href="mailto:markley.kyle@epa.gov"> Feedback</v-btn></v-footer>
   </v-app>
 </template>
 

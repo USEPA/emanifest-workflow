@@ -1,7 +1,7 @@
 <template>
-    <Manifest />
+    <Home />
 </template>
 
 <script setup>
-import Manifest from './Manifest.vue';
+import Home from './Home.vue';
 </script>
