@@ -3,7 +3,7 @@
         <div class="text-h2">e-Manifest Workflow</div>
         <div class="mt-5">
             This site provides interactive tools to assist with implementing the electronic workflow for the EPA Uniform
-            Hazarous Waste Manifest.
+            Hazardous Waste Manifest.
         </div>
         <v-row class="mt-5">
             <v-col cols="6">
