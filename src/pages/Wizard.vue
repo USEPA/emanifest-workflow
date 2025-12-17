@@ -3,95 +3,113 @@
         <div class="text-h5 mr-2">Electronic Workflow Wizard </div>
         <tooltip tipLocation="wizardHeading" type="info"></tooltip>
     </div>
-    <v-card :width="baseWidth" title="Basic Information" class="mx-auto px-4 my-4">
-        <v-card-subtitle>Answer all questions below to view the workflow steps.</v-card-subtitle>
-        <v-card-text>
-            <v-select label="Who is creating the manifest electronically?" :items="parties" item-title="text"
-                item-value="value" v-model="selectedParty" return-object></v-select>
-            <v-select label="How are they creating it?" :items="createMethods" item-title="text" item-value="value"
-                v-model="selectedCreateMethod" return-object></v-select>
-            <v-select label="How is the generator signing?" :items="genSigMethods" item-title="text" item-value="value"
-                v-model="selectedSigMethod" return-object></v-select>
-            <v-select label="Is there more than 1 transporter?" :items="['Yes', 'No']" v-model="selectedTransporter"
-                return-object></v-select>
-        </v-card-text>
-    </v-card>
-    <div v-if="allFieldsFilled">
-        <v-card :width="baseWidth" title="Here's how the process works for this scenario" class="mx-auto px-4 my-4"
-            v-if="selectedParty && selectedCreateMethod && selectedSigMethod">
-            <v-card-text>
-                <h3>Prerequisites</h3>
-                The following parties must have a registered user to participate in the worklow:
-                {{ preStep }}
-                <div v-if="selectedSigMethod.value === 'paper'" class="mt-2">The generator does not need an account for
-                    signing,
-                    but Large and Small Quantity
-                    Generators must
-                    maintain an account to access final signed manifests from receiving
-                    facilities, submit post-receipt data corrections requested by regulators, and submit exception
-                    reports electronically via e-Manifest. </div>
-                <v-alert class="mt-2" border="start" border-color="blue accent-4">To create an account, go to <a
-                        href="https://rcrainfo.epa.gov/" target="_blank">RCRAInfo</a>, then request permission to the
-                    relevant EPA ID(s).</v-alert>
-                <div v-if="selectedCreateMethod.value === 'external'" class="mt-3">
-                    To integrate with e-Manifest from an external system you need Site
-                    Management permission to your EPA ID Number and will need to generate an API ID and Key from the
-                    RCRAInfo.</div>
-            </v-card-text>
-        </v-card>
+    <v-container>
+        <v-row justify="center" align="center">
+            <v-col cols="12" md="6">
+                <v-card title="Basic Information" rounded="xl">
+                    <v-card-subtitle>Answer all questions below to view the workflow steps.</v-card-subtitle>
+                    <v-card-text>
+                        <v-select label="Who is creating the manifest electronically?" :items="parties"
+                            item-title="text" item-value="value" v-model="selectedParty" return-object></v-select>
+                        <v-select label="How are they creating it?" :items="createMethods" item-title="text"
+                            item-value="value" v-model="selectedCreateMethod" return-object></v-select>
+                        <v-select label="How is the generator signing?" :items="genSigMethods" item-title="text"
+                            item-value="value" v-model="selectedSigMethod" return-object></v-select>
+                        <v-select label="Is there more than 1 transporter?" :items="['Yes', 'No']"
+                            v-model="selectedTransporter" return-object></v-select>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
+    </v-container>
+    <v-container v-if="allFieldsFilled" class="pt-0">
+        <v-row justify="center" align="center">
+            <v-col cols="12" md="6">
+                <v-card title="Process Overview"
+                     v-if="selectedParty && selectedCreateMethod && selectedSigMethod" rounded="xl">
+                    <v-card-text>
+                        <h3>Prerequisites</h3>
+                        The following parties must have a registered user to participate in the worklow:
+                        {{ preStep }}
+                        <div v-if="selectedSigMethod.value === 'paper'" class="mt-2">The generator does not need an
+                            account for
+                            signing,
+                            but Large and Small Quantity
+                            Generators must
+                            maintain an account to access final signed manifests from receiving
+                            facilities, submit post-receipt data corrections requested by regulators, and submit
+                            exception
+                            reports electronically via e-Manifest. </div>
+                        <v-alert class="mt-2" border="start" border-color="blue accent-4">To create an account, go to <a
+                                href="https://rcrainfo.epa.gov/" target="_blank">RCRAInfo</a>, then request permission
+                            to the
+                            relevant EPA ID(s).</v-alert>
+                        <div v-if="selectedCreateMethod.value === 'external'" class="mt-3">
+                            To integrate with e-Manifest from an external system you need Site
+                            Management permission to your EPA ID Number and will need to generate an API ID and Key from
+                            the
+                            RCRAInfo.</div>
+                    </v-card-text>
+                </v-card>
 
-        <v-card :width="baseWidth" title="Step 1" class=" mx-auto px-4 my-4">
-            <v-card-text>{{ step1 }} </v-card-text>
-        </v-card>
-        <v-card :width="baseWidth" title="Step 2" class=" mx-auto px-4 my-4">
-            <v-card-text>Schedule the shipment. This must be done by the Receiving Facility unless it opts to allow
-                other parties to schedule manifests (via a setting in e-Manifest).</v-card-text>
-        </v-card>
-        <v-card :width="baseWidth" title="Step 3" class=" mx-auto px-4 my-4">
-            <v-card-text>{{ step3 }}
-                <ul class="ml-4">
-                    <li>1st Copy: To comply with DOT requirement to carry a shipping paper</li>
-                    <li v-if="selectedSigMethod.value == 'paper'">2nd Copy: For generator and initial transporter to
-                        sign - generator retains for recordkeeping</li>
-                </ul>
-                <v-alert class="mt-2" border="start" border-color="blue accent-4">
-                    This step can occur later, but must happen before the waste leaves the generator site.
-                    Copies can be printed by any party. There are <a href="#" @click.prevent="printDialog = true">two
-                        options</a> for printing the manifest. Copies may be marked up to match shipment actuals,
-                    but these changes must be updated in e-Manifest before
-                    the first party's signature.
-                </v-alert>
-            </v-card-text>
-        </v-card>
-        <v-card :width="baseWidth" title="Step 4" class=" mx-auto px-4 my-4">
-            <v-card-text>{{ step4 }} <br>
-                <v-btn @click="dialog = true" color="surface-variant" text="Signature Options" size="small"
-                    class="mt-2"></v-btn>
-            </v-card-text>
-        </v-card>
-        <v-card :width="baseWidth" title="Step 5" class=" mx-auto px-4 my-4">
-            <v-card-text>{{ step5 }} <br>
-                <v-btn @click="dialog = true" color="surface-variant" text="Signature Options" size="small"
-                    class="mt-2"></v-btn>
-            </v-card-text>
-        </v-card>
-        <v-card :width="baseWidth" title="Step 6" class=" mx-auto px-4 my-4">
-            <v-card-text>{{ step6 }} <br>
-                <v-btn @click="dialog = true" color="surface-variant" text="Signature Options" size="small"
-                    class="mt-2"></v-btn>
-            </v-card-text>
-        </v-card>
-        <v-card :width="baseWidth" title="Step 7" class=" mx-auto px-4 my-4">
-            <v-card-text>{{ step7 }} <br>
-                <v-btn @click="dialog = true" color="surface-variant" text="Signature Options" size="small"
-                    class="mt-2"></v-btn>
-            </v-card-text>
-        </v-card>
-        <v-card :width="baseWidth" title="Step 8" class=" mx-auto px-4 my-4">
-            <v-card-text>{{ step8 }}
-            </v-card-text>
-        </v-card>
-    </div>
+                <v-card title="Step 1" class=" mx-auto px-4 my-4" rounded="xl">
+                    <v-card-text>{{ step1 }} </v-card-text>
+                </v-card>
+                <v-card title="Step 2" class=" mx-auto px-4 my-4" rounded="xl">
+                    <v-card-text>Schedule the shipment. This must be done by the Receiving Facility unless it opts to
+                        allow
+                        other parties to schedule manifests (via a setting in e-Manifest).</v-card-text>
+                </v-card>
+                <v-card title="Step 3" class=" mx-auto px-4 my-4" rounded="xl">
+                    <v-card-text>{{ step3 }}
+                        <ul class="ml-4">
+                            <li>1st Copy: To comply with DOT requirement to carry a shipping paper</li>
+                            <li v-if="selectedSigMethod.value == 'paper'">2nd Copy: For generator and initial
+                                transporter to
+                                sign - generator retains for recordkeeping</li>
+                        </ul>
+                        <v-alert class="mt-2" border="start" border-color="blue accent-4">
+                            This step can occur later, but must happen before the waste leaves the generator site.
+                            Copies can be printed by any party. There are <a href="#"
+                                @click.prevent="printDialog = true">two
+                                options</a> for printing the manifest. Copies may be marked up to match shipment
+                            actuals,
+                            but these changes must be updated in e-Manifest before
+                            the first party's signature.
+                        </v-alert>
+                    </v-card-text>
+                </v-card>
+                <v-card title="Step 4" class=" mx-auto px-4 my-4" rounded="xl">
+                    <v-card-text>{{ step4 }} <br>
+                        <v-btn @click="dialog = true" color="surface-variant" text="Signature Options" size="small"
+                            class="mt-2"></v-btn>
+                    </v-card-text>
+                </v-card>
+                <v-card title="Step 5" class=" mx-auto px-4 my-4" rounded="xl">
+                    <v-card-text>{{ step5 }} <br>
+                        <v-btn @click="dialog = true" color="surface-variant" text="Signature Options" size="small"
+                            class="mt-2"></v-btn>
+                    </v-card-text>
+                </v-card>
+                <v-card title="Step 6" class=" mx-auto px-4 my-4" rounded="xl">
+                    <v-card-text>{{ step6 }} <br>
+                        <v-btn @click="dialog = true" color="surface-variant" text="Signature Options" size="small"
+                            class="mt-2"></v-btn>
+                    </v-card-text>
+                </v-card>
+                <v-card title="Step 7" class=" mx-auto px-4 my-4" rounded="xl">
+                    <v-card-text>{{ step7 }} <br>
+                        <v-btn @click="dialog = true" color="surface-variant" text="Signature Options" size="small"
+                            class="mt-2"></v-btn>
+                    </v-card-text>
+                </v-card>
+                <v-card title="Step 8" class=" mx-auto px-4 my-4" rounded="xl">
+                    <v-card-text>{{ step8 }}
+                    </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
+    </v-container>
     <v-dialog max-width="700" v-model="dialog">
         <v-card title="Electronic Signature Options">
             <v-card-text>
@@ -214,7 +232,7 @@ const dataEditText = 'Data edits must be submitted to match shipment actuals pri
 
 const step4 = computed(() => {
     if (selectedSigMethod.value.value === 'paper') {
-        return 'Generator and initial transporter sign paper manifest copy. Generator keeps this copy for their recordkeeping requirements.' 
+        return 'Generator and initial transporter sign paper manifest copy. Generator keeps this copy for their recordkeeping requirements.'
     } else {
         return 'Generator signs electronically. ' + dataEditText
     }
