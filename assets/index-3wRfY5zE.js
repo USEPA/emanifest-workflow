@@ -1,1 +1,0 @@
-import o from"./Home-Cx5cF0v-.js";import{c as r,o as t}from"./index-BtqN2bq6.js";import"./VRow-B_RTtXVU.js";import"./VGrid-Bvo70ZpM.js";const s={__name:"index",setup(e){return(c,_)=>(t(),r(o))}};export{s as default};
