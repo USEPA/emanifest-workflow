@@ -12,6 +12,11 @@
                     <v-icon v-bind="props" icon="mdi-lock"></v-icon>
                 </template>
             </v-tooltip>
+            <v-tooltip v-if="signatureRequiredNow" text="Signature Required for this Status" location="bottom">
+                <template v-slot:activator="{ props }">
+                    <v-icon v-bind="props" icon="mdi-draw-pen" color="green-darken-1"></v-icon>
+                </template>
+            </v-tooltip>
             <span v-if="locked" class="sr-only">{{ readOnlyText }}</span>
         </template>
     </v-text-field>
@@ -71,6 +76,16 @@ const required = computed(() => {
     return false
 })
 
+const requiredNow = computed(() => {
+    if (field.hasOwnProperty('required')) {
+        console.log(`status id = ${store.lookupStatusId(field.required)} and step = ${store.currentStep}`)
+        if (store.lookupStatusId(field.required) == store.currentStep + 1) {
+            return true
+        }
+    }
+    return false
+})
+
 const populate = computed(() => {
     if (field.hasOwnProperty('populate')) {
         return store.lookupStatusId(field.populate) <= store.currentStep + 1
@@ -83,6 +98,10 @@ const locked = computed(() => {
         return store.lookupStatusId(field.locked) < store.currentStep + 1
     }
     return false
+})
+
+const signatureRequiredNow = computed(() => {
+    return props.name.includes('signature') && requiredNow.value
 })
 
 </script>

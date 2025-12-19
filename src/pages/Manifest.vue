@@ -47,8 +47,8 @@
         <v-container class="ma-0 pa-4">
             <div class="d-flex align-center">
                 <h2 class="my-2">6-7. Transporter Information</h2>
-                <tooltip tipLocation="transporters" type="info"></tooltip>
                 <label-required status="Scheduled"></label-required>
+                <tooltip tipLocation="transporters" type="info" class="ml-2"></tooltip>
             </div>
             <v-table>
                 <thead>

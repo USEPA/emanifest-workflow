@@ -7,15 +7,17 @@
                 @click="$router.push('/')"></v-icon-btn>
         </v-app-bar-title>
         <div class="d-flex justify-space-evenly ga-2">
-            <v-btn to="/manifest" title="Form Workflow"><v-icon icon="mdi-list-box-outline" aria-label="Form Workflow"
+            <v-btn to="/basics" title="Manifest Basics"><v-icon icon="mdi-file-sign" aria-label="Manifest Basics"
                     size="large"></v-icon></v-btn>
             <v-btn to="/wizard" title="Workflow Wizard"><v-icon icon="mdi-assistant" aria-label="Workflow Wizard"
                     size="large"></v-icon></v-btn>
+            <v-btn to="/manifest" title="Form Workflow"><v-icon icon="mdi-list-box-outline" aria-label="Form Workflow"
+                    size="large"></v-icon></v-btn>
             <v-icon-btn :icon="themeMode" @click="toggleTheme" variant="text" aria-label="Change Theme"
-                title="Change Theme"></v-icon-btn>
+                title="Change Theme" class="pb-2"></v-icon-btn>
             <v-menu>
                 <template v-slot:activator="{ props }">
-                    <v-icon-btn icon="mdi-dots-vertical" variant="text" v-bind="props" title="Resources"></v-icon-btn>
+                    <v-icon-btn icon="mdi-dots-vertical" variant="text" v-bind="props" title="Resources" class="pb-2"></v-icon-btn>
                 </template>
                 <v-list>
                     <v-list-item v-for="(item, i) in listLinks" :key="i" :value="i" :href="item.url" target="_blank">

@@ -16,8 +16,6 @@ import { fileURLToPath, URL } from 'node:url'
 export default defineConfig({
   base: process.env.NODE_ENV === "production" ? "/emanifest-workflow/" : "/",
   plugins: [
-    VueRouter(),
-    Layouts(),
     Vue({
       template: { transformAssetUrls },
     }),
@@ -28,6 +26,8 @@ export default defineConfig({
         configFile: 'src/styles/settings.scss',
       },
     }),
+    VueRouter(),
+    Layouts(),
     Components(),
     Fonts({
       google: {
@@ -73,6 +73,8 @@ export default defineConfig({
       '.ts',
       '.tsx',
       '.vue',
+      '.sass',
+      '.scss',
     ],
   },
   server: {

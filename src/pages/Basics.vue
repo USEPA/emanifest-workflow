@@ -22,34 +22,36 @@
 
     <v-container class="w-66 bg-surface px-6">
         <div class="text-h5 mb-2">Electronic Manifest Types</div>
-        <div>There are two different types of electronic manifests - fully electronic and hybrid.</div>
-        <ul class="ml-6">
-            <li>Fully Electronic: all parties sign manifest electronically as waste changes custody</li>
-            <li>Hybrid: generator and intial transporter sign paper copy of electionic manifest. All transporters and
-                receiving faciliy sign manifest electronically as waste changes custody</li>
-        </ul>
-        <div class="subtitle-2 mb-2 mt-2">The table below shows a comparison of signature methods for fully electronic
-            and
-            hybrid manifests.</div>
-        <v-table class="w-75 elevation-6" density="compact" striped="odd">
+        <div class="mb-3">
+            There are two different types of electronic manifests - fully electronic and hybrid. The
+            primary difference between the two is how the signatures occur when waste changes custody between the
+            generator and initial transporter at pickup.</div>
+        <v-row align="stretch">
+            <v-col cols="12" md="6" v-for="(type) in electronicCards">
+                <v-card color="primary-darken-1 fill-height">
+                    <v-card-title>{{ type.title }}</v-card-title>
+                    <v-card-text>
+                        <ul class="ml-6">
+                            <li v-for="(item) in type.main">{{ item }}</li>
+                            <ul class="ml-6">
+                                <li v-for="(item) in type.sub">{{ item }}</li>
+                            </ul>
+                        </ul>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
+        <div class="subtitle-2 mb-2 mt-6">
+            The table below shows a comparison of signature methods for fully electronic
+            and hybrid manifests.
+        </div>
+        <v-table class="elevation-6" striped="odd">
             <thead>
                 <tr>
                     <th class="text-right">Type</th>
-                    <th class="text-center">
-                        <div>Generator</div>
-                        <v-icon :color="iconColor" :size="iconSize" icon="mdi-factory"></v-icon>
-                    </th>
-                    <th class="text-center">
-                        <div>Transporter 1</div>
-                        <v-icon :color="iconColor" :size="iconSize" icon="mdi-truck"></v-icon>
-                    </th>
-                    <th class="text-center">
-                        <div>Other Transporters</div>
-                        <v-icon :color="iconColor" :size="iconSize" icon="mdi-truck"></v-icon>
-                    </th class="text-center">
-                    <th class="text-center">
-                        <div>Receiving Facility</div>
-                        <v-icon :color="iconColor" :size="iconSize" icon="mdi-recycle"></v-icon>
+                    <th class="text-center" v-for="(item) in manifestTypeHeadings">
+                        <div>{{ item.text }}</div>
+                        <v-icon color="success" size="30" :icon="item.icon"></v-icon>
                     </th>
                 </tr>
             </thead>
@@ -75,7 +77,7 @@
         <div class="text-h5 mb-2">Signature Options</div>
         <div>There are multiple options for performing signatures on electronic manifests. The below table summarize the
             available options.</div>
-        <v-table striped="odd" class="elevation-6">
+        <v-table striped="odd" class="elevation-6 mt-3">
             <thead>
                 <tr>
                     <th>
@@ -84,7 +86,9 @@
                     <th>
                         Description
                     </th>
-                    <th>Demonstration Video</th>
+                    <th>
+                        Demonstration Video
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -100,7 +104,7 @@
             </tbody>
         </v-table>
 
-        <div class="text-h6 my-2">Remote Signature Timing Flexibility</div>
+        <div class="text-h6 mt-6 mb-2">Remote Signature Timing Flexibility</div>
         <div class="font-weight-regular">EPA's remote signer policy offers flexiblity in the timing that the electronic
             signature needs to occurs.</div>
         <div>Remote signers have until the earlier of either: </div>
@@ -129,21 +133,24 @@ const steps = [
     {
         title: 'Create Shipment in e-Manifest',
         main: ' Must create shipment in e-Manifest before it ships.',
-        bullets: ['Any party (generator, transporter, designated facility, broker) can create and update it',
+        bullets: [
+            'Any party (generator, transporter, designated facility, broker) can create and update it',
             'Must be set to Scheduled status by the TSDF* before shipping.'
         ]
     },
     {
         title: 'Print DOT Shipping Paper',
         main: ' DOT requires that a hard copy shipping paper be placed in the cab of the transport vehicle during transportation',
-        bullets: ['A single sheet shipping paper can be printed from e-Manifest to satisfy the DOT HMR requirement',
+        bullets: [
+            'A single sheet shipping paper can be printed from e-Manifest to satisfy the DOT HMR requirement',
             'Edits can be made on paper after printing out'
         ]
     },
     {
         title: 'Electronically Sign as Shipment Changes Custody',
         main: ' Signatures occur in the e-Manifest user interface or are submitted from external systems to e-Manifest (via API) when the shipment changes custody between parties',
-        bullets: ['Field personnel (i.e. drivers/dock workers) can sign for themselves or through registered users located remotely',
+        bullets: [
+            'Field personnel (i.e. drivers/dock workers) can sign for themselves or through registered users located remotely',
             'Hybrid option available for generators unable to electronically sign'
         ]
     },
@@ -151,6 +158,43 @@ const steps = [
         title: 'Final Submission within 30 days',
         main: 'The final receiving facility must submit the final manifest within 30 days of receipt by completing a CROMERR signature'
     }
+]
+
+const electronicCards =
+    [
+        {
+            title: 'Fully Electronic',
+            main: [
+                'All parties (generator, transporters, receiving facility) sign manifest electronically as waste changes custody',
+                'Considerations for the generator'
+            ],
+            sub: [
+                'Generator signs electronically',
+                'Generator uses e-Manifest system to access their copy to meet recordkeeping requirement'
+            ]
+        },
+        {
+            title: 'Hybrid',
+            main: [
+                'Generator and intial transporter sign paper copy of electionic manifest.',
+                'All transporters and receiving faciliy sign manifest electronically as waste changes custody.',
+                'Considerations for the generator'
+            ],
+            sub: [
+                'Use if no registered user is available to sign',
+                'Use if no access to internet at pickup',
+                'Use if EPA ID not assigned (i.e. Very Small Quanity Generator)',
+                'Required to retain paper copy to meet recordkeeping requirement'
+            ]
+        }
+
+    ]
+
+const manifestTypeHeadings = [
+    { text: 'Generator', icon: 'mdi-factory' },
+    { text: 'Transporter 1', icon: 'mdi-truck' },
+    { text: 'Other Transporters', icon: 'mdi-truck' },
+    { text: 'Receiving Facility', icon: 'mdi-recycle' }
 ]
 
 const signatureTypes = [
@@ -176,8 +220,7 @@ const signatureTypes = [
     }
 ]
 
-const iconColor = 'success'
-const iconSize = '30'
+
 const electronic = 'Electronic Signature'
 const paper = 'Paper Signature'
 </script>
