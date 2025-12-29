@@ -78,7 +78,6 @@ const required = computed(() => {
 
 const requiredNow = computed(() => {
     if (field.hasOwnProperty('required')) {
-        console.log(`status id = ${store.lookupStatusId(field.required)} and step = ${store.currentStep}`)
         if (store.lookupStatusId(field.required) == store.currentStep + 1) {
             return true
         }

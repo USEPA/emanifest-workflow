@@ -159,6 +159,12 @@
     </v-dialog>
 
 </template>
+<style scoped>
+a:link,
+a:visited {
+    color: inherit !important
+}
+</style>
 
 <script setup>
 import { ref } from 'vue';

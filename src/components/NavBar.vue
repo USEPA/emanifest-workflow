@@ -13,7 +13,7 @@
                     size="large"></v-icon></v-btn>
             <v-btn to="/manifest" title="Form Workflow"><v-icon icon="mdi-list-box-outline" aria-label="Form Workflow"
                     size="large"></v-icon></v-btn>
-            <v-icon-btn :icon="themeMode" @click="toggleTheme" variant="text" aria-label="Change Theme"
+            <v-icon-btn :icon="themeStore.themeIcon" @click="themeStore.toggleTheme" variant="text" aria-label="Change Theme"
                 title="Change Theme" class="pb-2"></v-icon-btn>
             <v-menu>
                 <template v-slot:activator="{ props }">
@@ -34,12 +34,13 @@ import { computed } from 'vue'
 import { useTheme } from 'vuetify'
 import { useScrollPosition } from '@/composables/useScrollPosition';
 import { useAppStore } from '@/stores/app'
+import { useThemeStore } from '@/stores/themeStore'
 import { useRoute } from 'vue-router';
 import { useDisplay } from 'vuetify'
 
 const route = useRoute();
-const theme = useTheme()
 const store = useAppStore();
+const themeStore = useThemeStore()
 const { smAndUp } = useDisplay()
 const nonMobile = smAndUp
 const { scrollY } = useScrollPosition();
@@ -51,23 +52,6 @@ const showTopNav = computed(() => {
     }
     return scrollY.value < 10;
 });
-
-//theme toggle
-const isDark = computed(() => theme.global.name.value === 'dark')
-
-const toggleTheme = () => {
-    const newTheme = isDark.value ? 'light' : 'dark';
-    theme.global.name.value = newTheme
-    localStorage.setItem('theme', newTheme);
-}
-
-const themeMode = computed(() => {
-    if (isDark.value) {
-        return 'mdi-white-balance-sunny'
-    } else {
-        return 'mdi-weather-night'
-    }
-})
 
 //list of links from store
 const listLinks = store.linksMenu
