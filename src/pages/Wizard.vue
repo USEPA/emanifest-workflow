@@ -33,8 +33,8 @@
             <v-col cols="12" md="6">
                 <v-card v-if="selectedParty && selectedCreateMethod && selectedSigMethod" class="mb-4">
                     <v-card-title>
-
-                        <v-icon icon="mdi-alert-circle mr-4"></v-icon>Prerequisites</v-card-title>
+                        <v-icon icon="mdi-alert-circle mr-4"></v-icon>Prerequisites
+                    </v-card-title>
                     <v-card-text class="ml-12">
                         The following parties must have a registered user to participate in the worklow:
                         <ul class="ml-5">
@@ -99,13 +99,18 @@
     <v-dialog max-width="700" v-model="videoDialog">
         <v-card title="Demonstration Video">
             <v-card-text>
-                <iframe width="560" height="315" :src="videoUrl" title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <div class="video-container">
+                    <v-progress-circular v-if="isLoading" indeterminate color="primary" size="64"
+                        class="video-spinner"></v-progress-circular>
+                    <iframe v-show="!isLoading" @load="handleLoad" class="video-iframe" width="560" height="315"
+                        :src="videoUrl" title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn text="Close" @click="videoDialog = false"></v-btn>
+                <v-btn text="Close" @click="closeVideoDialog"></v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -167,6 +172,31 @@ a:link,
 a:visited {
     color: inherit !important
 }
+
+.video-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    /* 16:9 Aspect Ratio */
+    /* Add a background color to the container which will be visible until the iframe loads */
+    background-color: #f0f0f0;
+}
+
+.video-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.video-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
 </style>
 
 <script setup>
@@ -203,6 +233,7 @@ const selectedTransporter = ref(null)
 const dialog = ref(false)
 const printDialog = ref(false)
 const videoDialog = ref(false)
+const isLoading = ref(true)
 const videoUrl = ref('')
 
 const generatorQuickSignUrl = 'https://www.youtube.com/embed/6vckZ9bTBOM?si=lEc3OnF3NboCu2y9'
@@ -213,6 +244,15 @@ const showQuickFill = import.meta.env.DEV
 function openVideoDialog(url) {
     videoDialog.value = true
     videoUrl.value = url
+}
+
+function closeVideoDialog(url) {
+    videoDialog.value = false
+    isLoading.value = true
+}
+
+const handleLoad = () => {
+    isLoading.value = false;
 }
 
 function reset() {
@@ -341,10 +381,20 @@ const step7 = computed(() => {
 })
 
 const step8 = computed(() => {
-    return { title: 'Final Submission', text: submitFinalText }
+    if (selectedTransporter.value === 'Yes') {
+        return { title: 'Final Submission', text: submitFinalText }
+    }
+    return false
 })
 
-const allSteps = reactive([step1, step2, step3, step4, step5, step6, step7, step8])
+watch(step8, (newValue, oldValue) => {
+    if (newValue === false) {
+        allSteps.pop()
+    } else {
+        allSteps.push(step8)
+    }
+})
+const allSteps = reactive([step1, step2, step3, step4, step5, step6, step7])
 
 function quickFill() {
     selectedParty.value = parties[0]
