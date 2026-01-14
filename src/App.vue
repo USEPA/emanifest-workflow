@@ -4,7 +4,7 @@
     <v-main>
       <router-view />
     </v-main>
-    <v-footer :color="themeStore.themeColor"><v-btn variant="text" href="mailto:markley.kyle@epa.gov">
+    <v-footer :color="themeStore.themeColor"><v-btn variant="text" :href="encodedFeedbackString">
         Feedback</v-btn></v-footer>
   </v-app>
 </template>
@@ -24,5 +24,9 @@ watch(
     theme.global.name.value = newTheme;
   }
 );
+
+const emailAddress = 'markley.kyle@epa.gov'
+const subjectLine = 'e-Manifest Workflow Feedback'
+const encodedFeedbackString = encodeURI(`mailto:${emailAddress}?subject=${subjectLine}`)
 
 </script>
