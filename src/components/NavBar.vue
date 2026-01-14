@@ -7,7 +7,7 @@
                 @click="$router.push('/')"></v-icon-btn>
         </v-app-bar-title>
         <div class="d-flex justify-space-evenly ga-2">
-            <v-btn to="/basics" title="Manifest Basics"><v-icon icon="mdi-file-sign" aria-label="Manifest Basics"
+            <v-btn to="/basics" title="Manifest Basics"><v-icon icon="mdi-book-open-blank-variant-outline" aria-label="Manifest Basics"
                     size="large"></v-icon></v-btn>
             <v-btn to="/wizard" title="Workflow Wizard"><v-icon icon="mdi-assistant" aria-label="Workflow Wizard"
                     size="large"></v-icon></v-btn>
