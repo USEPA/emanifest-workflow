@@ -3,10 +3,10 @@
         <section>
             <div class="text-h4 mr-2 mb-3">Electronic Manifest Basics </div>
             <p class="text-body-1 mb-6">{{ intro }} </p>
-            <div class="text-h5 mb-2">Main Requirements</div>
-            <p class="text-body-1 mb-2">Electronic manifests have four main requirements. Click each panel to see more
-                information.</p>
-            <v-expansion-panels variant="accordion" class="elevation-6">
+            <div class="text-h5 mt-12 mb-2">Main Requirements</div>
+            <p class="text-body-1 mb-2">Electronic manifests have four main requirements. Click each panel to learn more
+                about each one.</p>
+            <v-expansion-panels variant="accordion" class="elevation-2">
                 <v-expansion-panel v-for="(item, i) in steps" :key="i" :title="`${i + 1}. ${item.title}`">
                     <v-expansion-panel-text>
                         {{ item.main }}
@@ -18,14 +18,14 @@
             </v-expansion-panels>
         </section>
         <section>
-            <div class="text-h5 mt-6 mb-2">Electronic Manifest Types</div>
+            <div class="text-h5 mt-12 mb-2">Electronic Manifest Types</div>
             <p class="text-body-1 mb-3">
                 There are two different types of electronic manifests - fully electronic and hybrid. The
                 primary difference between the two is how the signatures occur when waste changes custody between the
                 generator and initial transporter at pickup.</p>
             <v-row align="stretch">
                 <v-col cols="12" md="6" v-for="(card) in electronicCards">
-                    <v-card :color="themeStore.themeColor" elevation="8" rounded="lg">
+                    <v-card :color="themeStore.themeColor" elevation="4" rounded="lg" class="fill-height">
                         <v-card-title>{{ card.title }}</v-card-title>
                         <v-card-text>
                             <ul>
@@ -47,7 +47,7 @@
                 The table below shows a comparison of signature methods for fully electronic
                 and hybrid manifests.
             </p>
-            <v-table class="elevation-6" striped="odd">
+            <v-table class="elevation-4" striped="odd">
                 <thead>
                     <tr>
                         <th class="text-right">Type</th>
@@ -76,12 +76,12 @@
             </v-table>
         </section>
         <section>
-            <div class="text-h5 mt-6 mb-2">Signature Options</div>
+            <div class="text-h5 mt-12 mb-2">Signature Options</div>
             <p class="text-body-1">There are multiple options for performing signatures on electronic manifests. The
                 below table summarize
                 the
                 available options.</p>
-            <v-table striped="odd" class="elevation-6 mt-3">
+            <v-table striped="odd" class="elevation-4 mt-3">
                 <thead>
                     <tr>
                         <th>
@@ -109,14 +109,14 @@
             </v-table>
 
             <div class="text-h6 mt-6 mb-2">Remote Signature Timing Flexibility</div>
-             <v-alert class="my-2" border="start" border-color="blue accent-4">
+            <v-alert class="my-2" border="start" border-color="blue accent-4">
                 To learn more about the remote signer policy, see <a href="https://rcrapublic.epa.gov/files/14956.pdf"
                     target="_blank">the Remote Signer Policy
                     memo <v-icon icon="mdi-open-in-new" size="18"></v-icon> </a>
             </v-alert>
             <p class="text-body-1">EPA's remote signer policy offers flexiblity in the timing that the
                 electronic
-                signature needs to occurs.</p>
+                signature needs to occur.</p>
             <p class="text-body-1">Remote signers have until the earlier of either: </p>
             <p class="text-body-1 ml-6">(1) 24 hours from the time that their field personnel received the waste from
                 the
@@ -138,6 +138,12 @@
                 with another waste hauler at 5:00 PM that same day. The remote signer has until before the transfer of
                 custody occurs (in this case, 5:00 PM Tuesday) to execute the electronic signature.</p>
         </section>
+        <v-divider class="mt-12"></v-divider>
+        <div class="py-4">
+            <div class="text-h6 mb-4">Next Steps</div>
+            <p class="text-body-1">Go to the <router-link to="/wizard">Electronic Workflow Wizard</router-link> to map
+                out your scenario to get started with electionic manifests.</p>
+        </div>
     </v-container>
 </template>
 <style scoped>
