@@ -100,8 +100,9 @@
                         <td>{{ item.type }}</td>
                         <td>{{ item.description }}</td>
                         <td>
-                            <div v-if="item.link"><a :href="item.link" target="_blank">Video <v-icon
-                                        icon="mdi-open-in-new" size="18"></v-icon></a></div>
+                            <div v-if="item.link">
+                                <video-button :url="item.link"></video-button>
+                             </div>
                             <div v-else>N/A</div>
                         </td>
                     </tr>
@@ -145,6 +146,7 @@
                 out your scenario to get started with electionic manifests.</p>
         </div>
     </v-container>
+    <video-dialog></video-dialog>
 </template>
 <style scoped>
 a:link,
@@ -155,6 +157,8 @@ a:visited {
 <script setup>
 import { useDisplay } from 'vuetify'
 import { useThemeStore } from '@/stores/themeStore'
+import VideoButton from '@/components/VideoButton.vue';
+import VideoDialog from '@/components/VideoDialog.vue';
 
 const { mdAndUp } = useDisplay()
 
@@ -279,12 +283,12 @@ const signatureTypes = [
     {
         type: 'Quick Signature using RCRAInfo',
         description: 'Field personnel responsible for shipment logs into RCRAInfo with their own account and electronically signs.',
-        link: 'https://youtu.be/6vckZ9bTBOM'
+        link: 'https://www.youtube.com/embed/6vckZ9bTBOM?si=lEc3OnF3NboCu2y9'
     },
     {
         type: 'Remote Signature using RCRAInfo',
         description: 'Field personnel responsible for shipment authorizes remote signer to sign manifest - remote signer logs into RCRAInfo with their own account and completes remote signature (provide name of field personnel and date).',
-        link: 'https://youtu.be/3kaGjxf6e80'
+        link: 'https://www.youtube.com/embed/3kaGjxf6e80?si=hbXRjYYtjO1lZBHb'
     },
     {
         type: 'Remote Signature using External System',
@@ -294,7 +298,7 @@ const signatureTypes = [
     {
         type: 'Hybrid Generator Signature',
         description: 'Available to Generators only - Field personnel responsible for shipment signs Item 15. Generator’s/Offeror’s Certifications of printed copy of the electronic manifest.',
-        link: 'https://youtu.be/V1341MjT9uY'
+        link: 'https://www.youtube.com/embed/V1341MjT9uY?si=UHNXzShpFc78sr4a'
     }
 ]
 

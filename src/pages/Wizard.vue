@@ -33,7 +33,7 @@
             <v-col cols="12" md="6">
                 <v-card v-if="selectedParty && selectedCreateMethod && selectedSigMethod" class="mb-4">
                     <v-card-title>
-                        <v-icon icon="mdi-alert-circle mr-4"></v-icon>Prerequisites
+                        <v-icon color="warning" icon="mdi-alert-circle mr-4"></v-icon>Prerequisites
                     </v-card-title>
                     <v-card-text class="ml-12">
                         The following parties must have a registered user to participate in the worklow:
@@ -58,16 +58,16 @@
                             RCRAInfo.</div>
                     </v-card-text>
                 </v-card>
-                <v-card class="my-4" v-for="(step, i) in allSteps">
+                <v-card v-for="(step, i) in activeSteps" class="my-4">
                     <v-card-title>
                         <v-chip class="font-weight-bold mr-2">
                             {{ i + 1 }}
                         </v-chip>
-                        {{ step.value.title }}
+                        {{ step.title }}
                     </v-card-title>
                     <v-card-text class="ml-12">
-                        {{ step.value.text }}
-                        <div v-if="step.value.print">
+                        {{ step.text }}
+                        <div v-if="step.print">
                             <ul class="ml-5">
                                 <li>1st Copy: To comply with DOT requirement to carry a shipping paper</li>
                                 <li v-if="selectedSigMethod.value == 'paper'">2nd Copy: For generator and initial
@@ -83,64 +83,51 @@
                                 the first party's signature.
                             </v-alert>
                         </div>
-                        <div v-if="step.value.signature">
+                        <div v-if="step.signature">
                             <v-btn color="primary" size="small" @click="dialog = true" class="mt-2"><v-icon
                                     icon="mdi-file-sign" class="mr-2"></v-icon>Signature Options</v-btn>
                         </div>
-                        <div v-if="step.value.video" class="mt-2">
-                            <v-btn color="primary" size="small" @click="openVideoDialog(step.value.url)"><v-icon
-                                    icon="mdi-video" class="mr-2"></v-icon>Demo</v-btn>
+                        <div v-if="step.video" class="mt-4">
+                            <video-button :url="step.url"></video-button>
                         </div>
                     </v-card-text>
                 </v-card>
             </v-col>
         </v-row>
     </v-container>
-    <v-dialog max-width="700" v-model="videoDialog">
-        <v-card title="Demonstration Video">
-            <v-card-text>
-                <div class="video-container">
-                    <v-progress-circular v-if="isLoading" indeterminate color="primary" size="64"
-                        class="video-spinner"></v-progress-circular>
-                    <iframe v-show="!isLoading" @load="handleLoad" class="video-iframe" width="560" height="315"
-                        :src="videoUrl" title="YouTube video player" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                </div>
-            </v-card-text>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn text="Close" @click="closeVideoDialog"></v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
+
+    <!--DIALOGS-->
+
+    <!--video dialog component-->
+    <video-dialog />
+
     <v-dialog max-width="700" v-model="dialog">
         <v-card title="Electronic Signature Options">
             <v-card-text>
                 <div class="text-subtitle-1 font-weight-bold">Quick Signature using RCRAInfo</div>
                 <div>Field personnel responsible for shipment logs into RCRAInfo with their own account and
                     electronically signs.</div>
-                <v-btn color="primary" @click="openVideoDialog(generatorQuickSignUrl)"><v-icon
-                        icon="mdi-video-box"></v-icon>Demo</v-btn>
+                <video-button :url="generatorQuickSignUrl" class="mt-2"></video-button>
+
                 <v-divider class="my-2"></v-divider>
                 <div class="text-subtitle-1 font-weight-bold">Remote Signature using RCRAInfo </div>
                 <div>Field personnel responsible for shipment authorizes remote signer to sign manifest - remote signer
                     logs into RCRAInfo with their own account and completes remote signature (provide name of field
                     personnel and date).</div>
-                <v-btn color="primary" @click="openVideoDialog(generatorRemoteSignUrl)"><v-icon
-                        icon="mdi-video-box"></v-icon>Demo</v-btn>
-                <v-divider class="my-2"></v-divider>
-                <div class="text-subtitle-1 font-weight-bold">Remote Signature using External System</div>
-                <div>Field personnel responsible for shipment executes signature event though company's own hazardous
-                    waste software - signature info submitted to e-Manifest via API.
-
-                    Requires the company to previously configure their software to integrate with e-Manifest API.
-                </div>
+                <video-button :url="generatorRemoteSignUrl" class="mt-2"></video-button>
                 <v-alert class="mt-2" border="start" border-color="blue accent-4">
                     To learn more about the remote signer policy, see <a
                         href="https://rcrapublic.epa.gov/files/14956.pdf" target="_blank">the Remote Signer Policy
                         memo</a>
                 </v-alert>
+                <v-divider class="my-2"></v-divider>
+                <div class="text-subtitle-1 font-weight-bold">Remote Signature using External System</div>
+                <div>Field personnel responsible for shipment executes signature event though company's own hazardous
+                    waste software - signature info submitted to e-Manifest via application programming interface (API).
+                    Requires the company to previously configure their software to integrate with e-Manifest API.
+                    View our <a href="https://usepa.github.io/e-manifest/" target="_blank">documentation <v-icon
+                            icon="mdi-open-in-new" size="18"></v-icon></a> to learn more about APIs.
+                </div>
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -200,9 +187,11 @@ a:visited {
 </style>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, unref, computed } from 'vue';
 
 import Tooltip from '../components/Tooltip.vue';
+import VideoButton from '@/components/VideoButton.vue';
+import VideoDialog from '@/components/VideoDialog.vue';
 
 /**
  * DROPDOWNS OPTIONS
@@ -232,28 +221,11 @@ const selectedTransporter = ref(null)
 
 const dialog = ref(false)
 const printDialog = ref(false)
-const videoDialog = ref(false)
-const isLoading = ref(true)
-const videoUrl = ref('')
 
 const generatorQuickSignUrl = 'https://www.youtube.com/embed/6vckZ9bTBOM?si=lEc3OnF3NboCu2y9'
 const generatorRemoteSignUrl = 'https://www.youtube.com/embed/3kaGjxf6e80?si=hbXRjYYtjO1lZBHb'
 
 const showQuickFill = import.meta.env.DEV
-
-function openVideoDialog(url) {
-    videoDialog.value = true
-    videoUrl.value = url
-}
-
-function closeVideoDialog(url) {
-    videoDialog.value = false
-    isLoading.value = true
-}
-
-const handleLoad = () => {
-    isLoading.value = false;
-}
 
 function reset() {
     selectedParty.value = null
@@ -279,6 +251,13 @@ const preStep = computed(() => {
 
 
 const step1 = computed(() => {
+    let step = {
+        title: 'Create the Manifest',
+        text: '',
+        video: true,
+        url: 'https://www.youtube.com/embed/Q-HLuOljA54?si=XKnCWzekKbYXINFd',
+        show: true
+    }
     const editText = 'The data may be modified up until the generator signs the manifest. '
     let action
 
@@ -288,12 +267,9 @@ const step1 = computed(() => {
         action = 'prepares the manifest shipment data in their external system, then uploads the data to e-Manifest via Application Programing Interface (API).'
     }
 
-    return {
-        title: 'Create the Manifest',
-        text: `${selectedParty.value.text} ${action} ${editText}`,
-        video: true,
-        url: 'https://www.youtube.com/embed/Q-HLuOljA54?si=XKnCWzekKbYXINFd'
-    }
+    step.text = `${selectedParty.value.text} ${action} ${editText}`
+
+    return step
 })
 
 const step2 = computed(() => {
@@ -301,7 +277,8 @@ const step2 = computed(() => {
         title: 'Schedule the Manifest',
         text: 'The Receiving Facility must schedule the manifest by default. Alternatively, the Receiving Facility can opt to allow other parties to schedule manifests via a setting in e-Manifest.',
         video: true,
-        url: 'https://www.youtube.com/embed/Cv13HhYeiOA?si=u0adr9QHXpm5Pu0q'
+        url: 'https://www.youtube.com/embed/Cv13HhYeiOA?si=u0adr9QHXpm5Pu0q',
+        show: true
     }
 })
 
@@ -312,89 +289,104 @@ const step3 = computed(() => {
         text: `Print ${copies} of the manifest`,
         print: true,
         video: true,
-        url: 'https://www.youtube.com/embed/V1341MjT9uY?si=__idvpTya6qSuIic'
+        url: 'https://www.youtube.com/embed/V1341MjT9uY?si=__idvpTya6qSuIic',
+        show: true
     }
 })
 
 const dataEditText = 'Data edits must be submitted to match shipment actuals prior to signing.'
 
 const step4 = computed(() => {
-    const title = 'Generator Signs'
-    if (selectedSigMethod.value.value === 'paper') {
-        return {
-            title: title,
-            text: 'Generator signs paper manifest copy. Generator keeps this copy for their recordkeeping requirements after the initial transporter signs.'
-        }
-    } else {
-        return {
-            title: title,
-            text: 'Generator signs electronically. ' + dataEditText,
-            signature: true
-        }
+    const step = {
+        title: 'Generator Signs',
+        text: '',
+        show: true,
+        signature: false
     }
+
+    if (selectedSigMethod.value.value === 'paper') {
+        step.text = 'Generator signs paper manifest copy. Generator keeps this copy for their recordkeeping requirements after the initial transporter signs.'
+
+    } else {
+
+        step.text = 'Generator signs electronically. ' + dataEditText
+        step.signature = true
+    }
+
+    return step
 })
 
 const step5 = computed(() => {
-    const title = 'Initial Transporter Signs'
-    if (selectedSigMethod.value.value === 'paper') {
-        return {
-            title: title,
-            text: 'Initial transporter signs paper manifest copy, then signs manifest electronically. ' + dataEditText,
-            signature: true
-        }
-    } else {
-        return { title: title, text: 'Initial transporter signs manifest electronically. ', signature: true }
+    const step = {
+        title: 'Initial Transporter Signs',
+        text: '',
+        show: true,
+        signature: true
     }
+
+    if (selectedSigMethod.value.value === 'paper') {
+        step.text = 'Initial transporter signs paper manifest copy, then signs manifest electronically. ' + dataEditText
+    } else {
+        step.text = 'Initial transporter signs manifest electronically. '
+    }
+
+    return step
 })
 
 const step6 = computed(() => {
-    if (selectedTransporter.value === 'Yes') {
-        return {
-            title: 'Next Transporter Signs',
-            text: 'Next transporter signs manifest electronically upon custody exchange. This is repeated for each transporter.',
-            signature: true
-        }
-    } else {
-        return {
-            title: 'Receiving Facility Signs',
-            text: 'Receiving facility signs manifest electronically upon receipt.',
-            signature: true
-        }
+    const step = {
+        title: '',
+        text: '',
+        show: true,
+        signature: true
     }
+    if (selectedTransporter.value === 'Yes') {
+        step.title = 'Next Transporter Signs'
+        step.text = 'Next transporter signs manifest electronically upon custody exchange. This is repeated for each transporter.'
+
+    } else {
+        step.title = 'Receiving Facility Signs'
+        step.text = 'Receiving facility signs manifest electronically upon receipt.'
+    }
+
+    return step
 })
 
 const submitFinalText = 'Within 30 days, the receiving facility must submit final manifest data and sign electronically in e-Manifest'
 
 const step7 = computed(() => {
-    if (selectedTransporter.value === 'Yes') {
-        return {
-            title: 'Receiving Facility Signs',
-            text: 'Receiving facility signs manifest electronically upon receipt.',
-            signature: true
-        }
-    } else {
-        return {
-            title: 'Final Submission',
-            text: submitFinalText
-        }
+    const step = {
+        title: '',
+        text: '',
+        show: true,
+        signature: false
     }
+    if (selectedTransporter.value === 'Yes') {
+        step.title = 'Receiving Facility Signs'
+        step.text = 'Receiving facility signs manifest electronically upon receipt.'
+        step.signature = true
+
+    } else {
+        step.title = 'Final Submission'
+        step.text = submitFinalText
+    }
+    return step
 })
 
 const step8 = computed(() => {
     if (selectedTransporter.value === 'Yes') {
-        return { title: 'Final Submission', text: submitFinalText }
+        return { title: 'Final Submission', text: submitFinalText, show: true }
     }
-    return false
+    return { show: false }
 })
 
-watch(step8, (newValue, oldValue) => {
-    if (newValue === false) {
-        allSteps.pop()
-    } else {
-        allSteps.push(step8)
-    }
+const allSteps = [step1, step2, step3, step4, step5, step6, step7, step8]
+
+const activeSteps = computed(() => {
+    return allSteps
+        .map(unref)          // unwrap each computed
+        .filter(item => item?.show)
 })
-const allSteps = reactive([step1, step2, step3, step4, step5, step6, step7])
 
 function quickFill() {
     selectedParty.value = parties[0]

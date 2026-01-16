@@ -18,6 +18,8 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     StatusBar: typeof import('./src/components/StatusBar.vue')['default']
     Tooltip: typeof import('./src/components/Tooltip.vue')['default']
+    VideoButton: typeof import('./src/components/VideoButton.vue')['default']
+    VideoDialog: typeof import('./src/components/VideoDialog.vue')['default']
     WasteInfo: typeof import('./src/components/WasteInfo.vue')['default']
   }
 }
