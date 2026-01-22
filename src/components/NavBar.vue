@@ -1,18 +1,18 @@
 <template>
     <v-app-bar v-if="showTopNav" border="b" color="primary-darken-1">
         <v-app-bar-title>
-            <div v-if="nonMobile" class="w-33" style="cursor: pointer" @click="$router.push('/')">
-                <v-icon icon="mdi-cog" size="small"></v-icon>
-                <v-icon icon="mdi-arrow-right-bold" size="small"></v-icon>
-                <span class="ml-2">e-Manifest Workflow</span>
+            <div class="w-33" style="cursor: pointer" @click="$router.push('/')">
+                <div class="ml-2 text-lg-h5 text-md-h6 text-body-1">
+                    <v-icon icon="mdi-cog" size="x-small"></v-icon>
+                    <v-icon icon="mdi-arrow-right-bold" size="x-small"></v-icon>
+                    <span> e-Manifest Workflow </span>
+                </div>
             </div>
-            <v-icon-btn v-else icon="mdi-home" variant="text" aria-label="Home" title="Home"
-                @click="$router.push('/')"></v-icon-btn>
         </v-app-bar-title>
-        <div class="d-flex justify-space-evenly ga-2 mr-4">
-            <v-btn to="/basics" title="Manifest Basics" class="text-none text-subtitle-1" size="small">Basics</v-btn>
-            <v-btn to="/wizard" title="Workflow Wizard" class="text-none text-subtitle-1" size="small">Wizard</v-btn>
-            <v-btn to="/manifest" title="Form Workflow" class="text-none text-subtitle-1" size="small">Workflow</v-btn>
+        <v-app-bar-nav-icon v-if="!nonMobile" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <div class="d-flex justify-space-evenly ga-2 mr-4" v-if="nonMobile">
+            <v-btn v-for="item in navPages" :to="`/${item.route}`" :title="item.title" class="text-none text-subtitle-1"
+                size="small">{{ item.shortName }}</v-btn>
             <v-divider vertical></v-divider>
             <v-icon-btn :icon="themeStore.themeIcon" @click="themeStore.toggleTheme" variant="text"
                 aria-label="Change Theme" title="Change Theme" class="pb-2"></v-icon-btn>
@@ -30,9 +30,20 @@
             </v-menu>
         </div>
     </v-app-bar>
+    <v-navigation-drawer v-model="drawer" temporary>
+        <v-list>
+            <v-list-item v-for="item in navPages" :key="item.title" :to="item.route" link>
+                <v-list-item-title>{{ item.shortName }}</v-list-item-title>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list-item><v-btn flat class="pa-0 text-none" @click="themeStore.toggleTheme">Change Theme <v-icon-btn
+                        :icon="themeStore.themeIcon" variant="text" aria-label="Change Theme" title="Change Theme"
+                        class="pb-2"></v-icon-btn></v-btn> </v-list-item>
+        </v-list>
+    </v-navigation-drawer>
 </template>
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useScrollPosition } from '@/composables/useScrollPosition';
 import { useAppStore } from '@/stores/app'
 import { useThemeStore } from '@/stores/themeStore'
@@ -45,6 +56,15 @@ const themeStore = useThemeStore()
 const { smAndUp } = useDisplay()
 const nonMobile = smAndUp
 const { scrollY } = useScrollPosition();
+
+const drawer = ref(false)
+
+const navPages = [
+    { title: 'Manifest Basics', shortName: 'Basics', route: 'basics' },
+    { title: 'Manifest Wizard', shortName: 'Wizard', route: 'wizard' },
+    { title: 'Form Workflow', shortName: 'Workflow', route: 'manifest' },
+
+]
 
 //hide top nav on scroll on all pages except home
 const showTopNav = computed(() => {

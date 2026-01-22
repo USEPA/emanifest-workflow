@@ -1,12 +1,12 @@
 <template>
-    <v-container fluid :class="`${themeStore.homeTopColor} d-flex flex-column justify-center px-12`" min-height="250px">
-        <div class="text-h2 font-weight-semibold mx-12 ">e-Manifest Workflow</div>
-        <div class="mt-5 mx-12 text-subtitle-1 ">
+    <v-container fluid :class="`${themeStore.homeTopColor} d-flex flex-column justify-center px-md-12`" min-height="250px">
+        <div class="text-lg-h2 text-md-h3 text-h4 font-weight-semibold">e-Manifest Workflow</div>
+        <div class="mt-5 text-subtitle-1">
             Documentation and interactive tools to assist with implementing the electronic workflow
             for the EPA Uniform Hazardous Waste Manifest.
         </div>
     </v-container>
-    <v-container fluid class="px-12">
+    <v-container fluid class="">
         <v-row class="mt-5" align="stretch">
             <v-col cols="12" :md="12 / enabledCards.length" v-for="(card) in enabledCards">
                 <v-card :color="themeStore.themeColor" elevation="8" rounded="lg" class="fill-height">
@@ -22,7 +22,7 @@
     </v-container>
     <v-divider class="my-6"></v-divider>
     <v-container fluid class="d-flex flex-column justify-center">
-        <v-card :class="`pl-4`" variant="text">
+        <v-card variant="text">
             <v-card-title>Useful Links</v-card-title>
             <v-card-text>
                 <div v-for="(item, i) in listLinks" :key="i" :value="i" class="mb-3">
