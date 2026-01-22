@@ -5,7 +5,8 @@
                 <v-icon :icon="icon" v-bind="activatorProps" :color="iconColor"></v-icon>
             </template>
             <div>
-                {{ text }}
+                {{ text }} <span v-if="props.link">. <a :class="`${themeStore.linkColor} font-weight-medium`" :href="link" target="_blank">Learn more <v-icon icon="mdi-open-in-new"
+                                    size="18"></v-icon></a></span>
             </div>
         </v-tooltip>
     </div>
@@ -13,12 +14,16 @@
 
 <script setup>
 import { useAppStore } from '@/stores/app'
+import { useThemeStore } from '@/stores/themeStore' 
+
+const themeStore = useThemeStore()
 const store = useAppStore();
 
 const props = defineProps({
     tipLocation: String,
     type: String,
-    status: String
+    status: String,
+    link: String
 })
 
 const text = store.getTooltip(props.tipLocation)

@@ -1,23 +1,25 @@
 <template>
-    <v-app-bar color="primary-darken-1" v-if="showTopNav">
+    <v-app-bar v-if="showTopNav" border="b" color="primary-darken-1">
         <v-app-bar-title>
-            <div v-if="nonMobile" class="w-33" style="cursor: pointer" @click="$router.push('/')">e-Manifest Workflow
+            <div v-if="nonMobile" class="w-33" style="cursor: pointer" @click="$router.push('/')">
+                <v-icon icon="mdi-cog" size="small"></v-icon>
+                <v-icon icon="mdi-arrow-right-bold" size="small"></v-icon>
+                <span class="ml-2">e-Manifest Workflow</span>
             </div>
             <v-icon-btn v-else icon="mdi-home" variant="text" aria-label="Home" title="Home"
                 @click="$router.push('/')"></v-icon-btn>
         </v-app-bar-title>
-        <div class="d-flex justify-space-evenly ga-2">
-            <v-btn to="/basics" title="Manifest Basics"><v-icon icon="mdi-book-open-blank-variant-outline" aria-label="Manifest Basics"
-                    size="large"></v-icon></v-btn>
-            <v-btn to="/wizard" title="Workflow Wizard"><v-icon icon="mdi-assistant" aria-label="Workflow Wizard"
-                    size="large"></v-icon></v-btn>
-            <v-btn to="/manifest" title="Form Workflow"><v-icon icon="mdi-list-box-outline" aria-label="Form Workflow"
-                    size="large"></v-icon></v-btn>
-            <v-icon-btn :icon="themeStore.themeIcon" @click="themeStore.toggleTheme" variant="text" aria-label="Change Theme"
-                title="Change Theme" class="pb-2"></v-icon-btn>
+        <div class="d-flex justify-space-evenly ga-2 mr-4">
+            <v-btn to="/basics" title="Manifest Basics" class="text-none text-subtitle-1" size="small">Basics</v-btn>
+            <v-btn to="/wizard" title="Workflow Wizard" class="text-none text-subtitle-1" size="small">Wizard</v-btn>
+            <v-btn to="/manifest" title="Form Workflow" class="text-none text-subtitle-1" size="small">Workflow</v-btn>
+            <v-divider vertical></v-divider>
+            <v-icon-btn :icon="themeStore.themeIcon" @click="themeStore.toggleTheme" variant="text"
+                aria-label="Change Theme" title="Change Theme" class="pb-2"></v-icon-btn>
             <v-menu>
                 <template v-slot:activator="{ props }">
-                    <v-icon-btn icon="mdi-dots-vertical" variant="text" v-bind="props" title="Resources" class="pb-2"></v-icon-btn>
+                    <v-icon-btn icon="mdi-dots-vertical" variant="text" v-bind="props" title="Resources"
+                        class="pb-2"></v-icon-btn>
                 </template>
                 <v-list>
                     <v-list-item v-for="(item, i) in listLinks" :key="i" :value="i" :href="item.url" target="_blank">
@@ -31,7 +33,6 @@
 </template>
 <script setup>
 import { computed } from 'vue'
-import { useTheme } from 'vuetify'
 import { useScrollPosition } from '@/composables/useScrollPosition';
 import { useAppStore } from '@/stores/app'
 import { useThemeStore } from '@/stores/themeStore'

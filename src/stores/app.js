@@ -91,7 +91,8 @@ export const useAppStore = defineStore('app', {
       wasteWarning: 'Waste information generally should not be changed after generator signature with exception to situations allowed in the regulations',
       tsdfWarning: 'The designated facility generally should not be changed after generator signature with exception to situations allowed in the regulations',
       workflowHeading: 'This page demonstrates when information is required and is able to be edited on the manifest. Use the Previous and Next buttons to navigate between the events.',
-      wizardHeading: 'This page provides general guidance and does not cover all scenarios. Please consult the regulations and system documentation for futher information.'
+      wizardHeading: 'This page provides general guidance and does not cover all scenarios. Please consult the regulations and system documentation for futher information.',
+      vsqg:'Please refer to federal and state guidance on generator ID requirements (i.e. for Very Small Quantity Generators (VSQGs)'
     },
     linksMenu: [
       { text: 'RCRAInfo Production', url: 'https://rcrainfo.epa.gov/' },

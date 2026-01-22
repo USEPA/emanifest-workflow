@@ -22,11 +22,13 @@ export default createVuetify({
       light: {
         colors: {
           background: '#ffffffff', 
+          'primary-lighten-4':'#C3DAF8'
         }
       },
       dark:{
         colors:{
-          'primary-darken-1': '#1D5C90'
+          'primary-darken-1': '#1D5C90',
+          'primary-darken-2':'#123A59'
         }
       }
     }

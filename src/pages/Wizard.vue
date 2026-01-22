@@ -1,24 +1,70 @@
 <template>
-    <div class="d-flex align-center justify-center">
+    <div class="mt-12 d-flex align-center justify-center">
         <div class="text-h5 mr-2">Electronic Workflow Wizard </div>
         <tooltip tipLocation="wizardHeading" type="info"></tooltip>
     </div>
     <v-container>
         <v-row justify="center" align="center">
             <v-col cols="12" md="6">
-                <v-card title="Basic Information">
-                    <v-card-subtitle class="text-wrap">Answer all questions below to view the workflow
+                <v-card title="Scenario Information">
+                    <v-card-subtitle class="text-wrap">Please answer all questions below to see the proposed workflow
                         steps.</v-card-subtitle>
                     <v-card-text>
-                        <v-select class="text-wrap" label="Who is creating the manifest electronically?"
-                            :items="parties" item-title="text" item-value="value" v-model="selectedParty"
-                            return-object></v-select>
-                        <v-select label="How are they creating it?" :items="createMethods" item-title="text"
-                            item-value="value" v-model="selectedCreateMethod" return-object></v-select>
-                        <v-select label="How is the generator signing?" :items="genSigMethods" item-title="text"
-                            item-value="value" v-model="selectedSigMethod" return-object></v-select>
-                        <v-select label="Is there more than 1 transporter?" :items="['Yes', 'No']"
-                            v-model="selectedTransporter" return-object></v-select>
+                        <div :class=questionTitleClasses>Generator</div>
+                        <div class="pl-4">
+                            <v-label class="text-wrap">Does the Generator have an EPA ID Number?<tooltip
+                                    tipLocation="vsqg" type="info" :link="generatorLink"></tooltip>
+                            </v-label>
+                            <v-radio-group v-model="selectedVsqg">
+                                <v-radio label="Yes" value="Yes"></v-radio>
+                                <v-radio label="No" value="No"></v-radio>
+                            </v-radio-group>
+                        </div>
+                        <div class="pl-4">
+                            <v-label class="text-wrap">How do you want the generator to sign?
+                            </v-label>
+                            <v-radio-group v-model="selectedSigMethod">
+                                <v-radio v-for="option in genSigMethods" :key="option.value" :label="option.text"
+                                    :value="option.value"></v-radio>
+                            </v-radio-group>
+                        </div>
+                        <v-alert v-if="electronicNoGenIdScenario" type="warning" class="mb-4">
+                            Since the generator does not have an EPA ID Number and you indicated it will sign
+                            electronically, it must
+                            obtain an EPA ID Number first before shipping waste. If the generator location state does
+                            not
+                            require VSQGs to obtain ID numbers and the generator does not intend to
+                            obtain an ID Number, please change the signing option to "{{ getItemText(genSigMethods,
+                                'paper') }}" in order to initiate the shipment.
+                        </v-alert>
+
+                        <div :class=questionTitleClasses>Transporter</div>
+                        <div class="pl-4">
+                            <v-label class="text-wrap">Is there more than 1 transporter?</v-label>
+                            <v-radio-group v-model="selectedTransporter">
+                                <v-radio label="Yes" value="Yes"></v-radio>
+                                <v-radio label="No" value="No"></v-radio>
+                            </v-radio-group>
+                        </div>
+
+                        <div :class=questionTitleClasses>Creator</div>
+                        <div class="pl-4">
+                            <v-label class="text-wrap">Which party is creating the manifest electronically?
+                            </v-label>
+                            <v-radio-group v-model="selectedParty">
+                                <v-radio v-for="option in parties" :key="option.value" :label="option.text"
+                                    :value="option.value"></v-radio>
+                            </v-radio-group>
+                        </div>
+
+                        <div class="pl-4">
+                            <v-label class="text-wrap">How are they creating it?
+                            </v-label>
+                            <v-radio-group v-model="selectedCreateMethod">
+                                <v-radio v-for="option in createMethods" :key="option.value" :label="option.text"
+                                    :value="option.value"></v-radio>
+                            </v-radio-group>
+                        </div>
                     </v-card-text>
                     <v-card-actions>
                         <v-btn v-if="showQuickFill" @click="quickFill">Quick Fill</v-btn>
@@ -28,7 +74,7 @@
             </v-col>
         </v-row>
     </v-container>
-    <v-container v-if="allFieldsFilled" class="pt-0">
+    <v-container v-if="allFieldsFilled" class="pt-0" id="stepSection">
         <v-row justify="center" align="center">
             <v-col cols="12" md="6">
                 <v-card v-if="selectedParty && selectedCreateMethod && selectedSigMethod" class="mb-4">
@@ -38,7 +84,9 @@
                     <v-card-text class="ml-12">
                         The following parties must have a registered user to participate in the worklow:
                         <ul class="ml-5">
-                            <li v-for="item in preStep">{{ item }}</li>
+                            <li v-for="item in preStep">{{ item }}
+                                <span v-if="item === 'Generator' && electronicNoGenIdScenario">{{ genIdText }}</span>
+                            </li>
                         </ul>
                         <div v-if="selectedSigMethod.value === 'paper'" class="mt-2">
                             Since you indicated that the generator is signing on paper, the generator does not need an
@@ -69,8 +117,9 @@
                         {{ step.text }}
                         <div v-if="step.print">
                             <ul class="ml-5">
-                                <li>1st Copy: To comply with DOT requirement to carry a shipping paper</li>
-                                <li v-if="selectedSigMethod.value == 'paper'">2nd Copy: For generator and initial
+                                <li><span v-if="selectedSigMethod === 'paper'">1st Copy: </span>To comply with DOT
+                                    requirement to carry a shipping paper</li>
+                                <li v-if="selectedSigMethod === 'paper'">2nd Copy: For generator and initial
                                     transporter to
                                     sign - generator retains for recordkeeping</li>
                             </ul>
@@ -187,12 +236,20 @@ a:visited {
 </style>
 
 <script setup>
-import { ref, unref, computed } from 'vue';
+import { ref, unref, computed, watch, nextTick } from 'vue';
+import { useGoTo } from 'vuetify'
 
 import Tooltip from '../components/Tooltip.vue';
 import VideoButton from '@/components/VideoButton.vue';
 import VideoDialog from '@/components/VideoDialog.vue';
 
+const goTo = useGoTo()
+
+const questionTitleClasses = ['text-subtitle-1', 'font-weight-bold', 'mb-3']
+
+const generatorLink = 'https://www.epa.gov/hwgenerators/categories-hazardous-waste-generators'
+const generatorQuickSignUrl = 'https://www.youtube.com/embed/6vckZ9bTBOM?si=lEc3OnF3NboCu2y9'
+const generatorRemoteSignUrl = 'https://www.youtube.com/embed/3kaGjxf6e80?si=hbXRjYYtjO1lZBHb'
 /**
  * DROPDOWNS OPTIONS
  */
@@ -208,7 +265,7 @@ const createMethods = [
 ]
 
 const genSigMethods = [
-    { value: 'elc', text: 'Electronically' },
+    { value: 'electronic', text: 'Electronically' },
     { value: 'paper', text: 'On paper (Hybrid)' }]
 
 /**
@@ -218,16 +275,15 @@ const selectedParty = ref(null)
 const selectedCreateMethod = ref(null)
 const selectedSigMethod = ref(null)
 const selectedTransporter = ref(null)
+const selectedVsqg = ref(null)
 
 const dialog = ref(false)
 const printDialog = ref(false)
 
-const generatorQuickSignUrl = 'https://www.youtube.com/embed/6vckZ9bTBOM?si=lEc3OnF3NboCu2y9'
-const generatorRemoteSignUrl = 'https://www.youtube.com/embed/3kaGjxf6e80?si=hbXRjYYtjO1lZBHb'
-
 const showQuickFill = import.meta.env.DEV
 
 function reset() {
+    selectedVsqg.value = null
     selectedParty.value = null
     selectedCreateMethod.value = null
     selectedSigMethod.value = null
@@ -235,23 +291,38 @@ function reset() {
 }
 
 const allFieldsFilled = computed(() => {
-    return selectedParty.value !== null && selectedCreateMethod.value !== null && selectedSigMethod.value !== null && selectedTransporter.value !== null
+    return selectedVsqg.value !== null && selectedParty.value !== null && selectedCreateMethod.value !== null && selectedSigMethod.value !== null && selectedTransporter.value !== null
 })
+
+watch(allFieldsFilled, async (newValue) => {
+    if (newValue) {
+        await nextTick();
+        goTo('#stepSection', { duration: 500, offset: -30 })
+    }
+})
+const electronicNoGenIdScenario = computed(() => {
+    return selectedVsqg?.value === 'No' && selectedSigMethod?.value === 'electronic'
+})
+
+function getItemText(items, value) {
+    return items.find(item => item.value === value).text
+}
 
 /**
  * STEP TEXT
  */
 const preStep = computed(() => {
     const allParties = ['Transporter(s)', 'Receiving Facility']
-    if (selectedSigMethod.value.value === 'elc' || selectedParty.value.value === 'generator') allParties.unshift('Generator')
-    if (selectedParty.value.value === 'broker') allParties.push('Broker')
+    if (selectedSigMethod.value === 'electronic' || selectedParty.value === 'generator') allParties.unshift('Generator')
+    if (selectedParty.value === 'broker') allParties.push('Broker')
 
     return allParties
 })
 
+const genIdText = '- Additionally the generator must obtain an EPA ID Number first if it does not have one'
 
 const step1 = computed(() => {
-    let step = {
+    const step = {
         title: 'Create the Manifest',
         text: '',
         video: true,
@@ -259,15 +330,15 @@ const step1 = computed(() => {
         show: true
     }
     const editText = 'The data may be modified up until the generator signs the manifest. '
-    let action
+    let action = ''
 
-    if (selectedCreateMethod.value.value === 'eman') {
+    if (selectedCreateMethod.value === 'eman') {
         action = 'accesses the e-Manifest module in RCRAInfo and creates the manifest.'
-    } else if (selectedCreateMethod.value.value === 'external') {
+    } else if (selectedCreateMethod.value === 'external') {
         action = 'prepares the manifest shipment data in their external system, then uploads the data to e-Manifest via Application Programing Interface (API).'
     }
 
-    step.text = `${selectedParty.value.text} ${action} ${editText}`
+    step.text = `${getItemText(parties, selectedParty.value)} ${action} ${editText}`
 
     return step
 })
@@ -283,7 +354,7 @@ const step2 = computed(() => {
 })
 
 const step3 = computed(() => {
-    const copies = selectedSigMethod.value.value === 'paper' ? '2 copies' : '1 copy'
+    const copies = selectedSigMethod.value === 'paper' ? '2 copies' : '1 copy'
     return {
         title: 'Print the Manifest',
         text: `Print ${copies} of the manifest`,
@@ -304,7 +375,7 @@ const step4 = computed(() => {
         signature: false
     }
 
-    if (selectedSigMethod.value.value === 'paper') {
+    if (selectedSigMethod.value === 'paper') {
         step.text = 'Generator signs paper manifest copy. Generator keeps this copy for their recordkeeping requirements after the initial transporter signs.'
 
     } else {
@@ -324,7 +395,7 @@ const step5 = computed(() => {
         signature: true
     }
 
-    if (selectedSigMethod.value.value === 'paper') {
+    if (selectedSigMethod.value === 'paper') {
         step.text = 'Initial transporter signs paper manifest copy, then signs manifest electronically. ' + dataEditText
     } else {
         step.text = 'Initial transporter signs manifest electronically. '
@@ -389,10 +460,11 @@ const activeSteps = computed(() => {
 })
 
 function quickFill() {
-    selectedParty.value = parties[0]
-    selectedCreateMethod.value = createMethods[0]
-    selectedSigMethod.value = genSigMethods[0]
+    selectedParty.value = 'generator'
+    selectedCreateMethod.value = 'eman'
+    selectedSigMethod.value = 'electronic'
     selectedTransporter.value = 'Yes'
+    selectedVsqg.value = 'No'
 }
 
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <v-container :class="`px-6 pb-6 mb-12 w-${pageWidth}`">
+    <v-container :class="`mt-12 px-6 pb-6 mb-12 w-${pageWidth}`">
         <section>
             <div class="text-h4 mr-2 mb-3">Electronic Manifest Basics </div>
             <p class="text-body-1 mb-6">{{ intro }} </p>

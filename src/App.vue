@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <nav-bar></nav-bar>
-    <v-main>
+    <v-main class="pa-0">
       <router-view />
     </v-main>
     <v-footer :color="themeStore.themeColor"><v-btn variant="text" :href="encodedFeedbackString">

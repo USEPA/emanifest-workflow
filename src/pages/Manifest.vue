@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex align-center justify-center">
+    <div class="mt-12 d-flex align-center justify-center">
         <div class="text-h5 mr-2">Manifest Form Workflow </div>
         <tooltip tipLocation="workflowHeading" type="info"></tooltip>
     </div>
@@ -7,7 +7,7 @@
     <status-bar></status-bar>
 
     <!--main content-->
-    <v-sheet :elevation="4" class="mx-12 my-3 pa-0" rounded="xl">
+    <v-sheet :elevation="1" class="mx-12 my-3 pa-0">
         <v-container class="ma-0 pa-4">
             <v-row>
                 <v-col cols="12" md="4">

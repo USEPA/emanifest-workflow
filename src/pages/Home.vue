@@ -1,35 +1,36 @@
 <template>
-    <v-container>
-        <div class="text-h2">e-Manifest Workflow</div>
-        <div class="mt-5">
-            This site provides documentation and interactive tools to assist with implementing the electronic workflow
-            for the EPA Uniform
-            Hazardous Waste Manifest.
+    <v-container fluid :class="`${themeStore.homeTopColor} d-flex flex-column justify-center px-12`" min-height="250px">
+        <div class="text-h2 font-weight-semibold mx-12 ">e-Manifest Workflow</div>
+        <div class="mt-5 mx-12 text-subtitle-1 ">
+            Documentation and interactive tools to assist with implementing the electronic workflow
+            for the EPA Uniform Hazardous Waste Manifest.
         </div>
+    </v-container>
+    <v-container fluid class="px-12">
         <v-row class="mt-5" align="stretch">
-            <v-col cols="12" :md="12 / enabledCards.length"  v-for="(card) in enabledCards">
+            <v-col cols="12" :md="12 / enabledCards.length" v-for="(card) in enabledCards">
                 <v-card :color="themeStore.themeColor" elevation="8" rounded="lg" class="fill-height">
                     <v-card-title>{{ card.title }}</v-card-title>
                     <v-card-text>
                         {{ card.description }}
                     </v-card-text>
-                    <v-card-actions class="pb-4"><v-btn variant="outlined" :to="card.route">Go <v-icon icon="mdi-arrow-right-bold"></v-icon></v-btn></v-card-actions>
+                    <v-card-actions class="pb-4"><v-btn variant="outlined" :to="card.route">Go <v-icon
+                                icon="mdi-arrow-right-bold"></v-icon></v-btn></v-card-actions>
                 </v-card>
             </v-col>
         </v-row>
-        <v-row>
-            <v-col cols="12">
-                <v-card rounded="lg">
-                    <v-card-title>Useful Links</v-card-title>
-                    <v-card-text>
-                            <div v-for="(item, i) in listLinks" :key="i" :value="i" class="mb-3">
-                                <a class="text-decoration-none" :href="item.url"  target="_blank">{{ item.text }} <v-icon icon="mdi-open-in-new"
-                                        size="18"></v-icon></a>
-                                </div>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-        </v-row>
+    </v-container>
+    <v-divider class="my-6"></v-divider>
+    <v-container fluid class="d-flex flex-column justify-center">
+        <v-card :class="`pl-4`" variant="text">
+            <v-card-title>Useful Links</v-card-title>
+            <v-card-text>
+                <div v-for="(item, i) in listLinks" :key="i" :value="i" class="mb-3">
+                    <a class="text-decoration-none" :href="item.url" target="_blank">{{ item.text }} <v-icon
+                            icon="mdi-open-in-new" size="18"></v-icon></a>
+                </div>
+            </v-card-text>
+        </v-card>
     </v-container>
 </template>
 <style scoped>
@@ -40,7 +41,7 @@ a:visited {
 </style>
 <script setup>
 import { computed } from 'vue'
-import { useThemeStore } from '@/stores/themeStore' 
+import { useThemeStore } from '@/stores/themeStore'
 import { useAppStore } from '@/stores/app'
 
 const themeStore = useThemeStore()
@@ -52,7 +53,7 @@ const cards = [
         route: '/basics',
         enabled: true
     },
-        {
+    {
         title: 'Workflow Wizard',
         description: 'Answer some basic questions to find out what each party needs to do in the workflow.',
         route: '/wizard',
