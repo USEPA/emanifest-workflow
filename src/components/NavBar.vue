@@ -1,15 +1,14 @@
 <template>
-    <v-app-bar v-if="showTopNav" border="b" color="primary-darken-1">
+    <v-app-bar border="b" color="primary-darken-1">
+        <v-app-bar-nav-icon v-if="!nonMobile" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-app-bar-title>
             <div class="w-33" style="cursor: pointer" @click="$router.push('/')">
-                <div class="ml-2 text-lg-h5 text-md-h6 text-body-1">
-                    <v-icon icon="mdi-cog" size="x-small"></v-icon>
-                    <v-icon icon="mdi-arrow-right-bold" size="x-small"></v-icon>
-                    <span> e-Manifest Workflow </span>
+                <div class="d-flex align-center">
+                    <v-img v-if="nonMobile" src="/EM logo.png" lazy-src="/EM logo.png" alt="My Image"   aspect-ratio="1" max-width="60" min-width="50" cover></v-img>
+                    <span class="ml-2 ">e-Manifest Workflow </span>
                 </div>
             </div>
         </v-app-bar-title>
-        <v-app-bar-nav-icon v-if="!nonMobile" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <div class="d-flex justify-space-evenly ga-2 mr-4" v-if="nonMobile">
             <v-btn v-for="item in navPages" :to="`/${item.route}`" :title="item.title" class="text-none text-subtitle-1"
                 size="small">{{ item.shortName }}</v-btn>
