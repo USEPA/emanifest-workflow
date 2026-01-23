@@ -7,7 +7,7 @@
     <status-bar></status-bar>
 
     <!--main content-->
-    <v-sheet :elevation="1" class="mx-12 my-3 pa-0">
+    <v-sheet :elevation="1" class="mx-2 mx-md-12 my-3 pa-0">
         <v-container class="ma-0 pa-4">
             <v-row>
                 <v-col cols="12" md="4">
