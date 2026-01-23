@@ -13,7 +13,7 @@
                         <div :class=questionTitleClasses>Generator</div>
                         <div class="pl-4">
                             <v-label class="text-wrap">Does the Generator have an EPA ID Number?<tooltip
-                                    tipLocation="vsqg" type="info" :link="generatorLink"></tooltip>
+                                    tipLocation="vsqg" type="info" :link="hwipLink" linkText="RCRAInfo Hazardous Waste Information Platform"></tooltip>
                             </v-label>
                             <v-radio-group v-model="selectedVsqg">
                                 <v-radio label="Yes" value="Yes"></v-radio>
@@ -248,6 +248,7 @@ const goTo = useGoTo()
 const questionTitleClasses = ['text-subtitle-1', 'font-weight-bold', 'mb-3']
 
 const generatorLink = 'https://www.epa.gov/hwgenerators/categories-hazardous-waste-generators'
+const hwipLink = 'https://rcrapublic.epa.gov/rcra-hwip'
 const generatorQuickSignUrl = 'https://www.youtube.com/embed/6vckZ9bTBOM?si=lEc3OnF3NboCu2y9'
 const generatorRemoteSignUrl = 'https://www.youtube.com/embed/3kaGjxf6e80?si=hbXRjYYtjO1lZBHb'
 /**
@@ -297,7 +298,7 @@ const allFieldsFilled = computed(() => {
 watch(allFieldsFilled, async (newValue) => {
     if (newValue) {
         await nextTick();
-        goTo('#stepSection', { duration: 500, offset: -30 })
+        goTo('#stepSection', { duration: 500, offset: -85 })
     }
 })
 const electronicNoGenIdScenario = computed(() => {

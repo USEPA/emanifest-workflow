@@ -92,14 +92,15 @@ export const useAppStore = defineStore('app', {
       tsdfWarning: 'The designated facility generally should not be changed after generator signature with exception to situations allowed in the regulations',
       workflowHeading: 'This page demonstrates when information is required and is able to be edited on the manifest. Use the Previous and Next buttons to navigate between the events.',
       wizardHeading: 'This page provides general guidance and does not cover all scenarios. Please consult the regulations and system documentation for futher information.',
-      vsqg:'Please refer to federal and state guidance on generator ID requirements (i.e. for Very Small Quantity Generators (VSQGs)'
+      vsqg: 'If you are unsure if you have an EPA ID Number, access '
     },
     linksMenu: [
       { text: 'RCRAInfo Production', url: 'https://rcrainfo.epa.gov/' },
       { text: 'RCRAInfo Pre-Production (Test)', url: 'https://rcrainfopreprod.epa.gov/' },
       { text: 'System Demo Videos', url: 'https://www.epa.gov/e-manifest/e-manifest-demonstration-videos' },
       { text: 'Industry Help', url: 'https://rcrainfo.epa.gov/rcrainfo-help/application/industryHelp/index.htm#t=SiteDashboard%2FEManifest%2FUG-eManifestIntroduction.htm' },
-      { text: 'FAQs', url: 'https://www.epa.gov/e-manifest/frequent-questions-about-e-manifest' }
+      { text: 'FAQs', url: 'https://www.epa.gov/e-manifest/frequent-questions-about-e-manifest' },
+      { text: 'RCRAInfo Hazardous Waste Information Platform (HWIP)', url: 'https://rcrapublic.epa.gov/rcra-hwip' }
     ]
   }),
   getters: {
