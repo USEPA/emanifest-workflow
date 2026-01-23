@@ -21,28 +21,33 @@
         </v-stepper-window>
         <v-stepper-actions @click:next="nextStep()" @click:prev="prevStep()"></v-stepper-actions>
     </v-stepper>
-    <v-container fluid class="banner-position" v-if="showBanner || hideHeader">
-        <v-banner min-height="120">
-            <v-row justify="space-between">
-                <v-col cols="auto" class="d-flex align-center">
-                    <v-btn size="small" @click="prevStep" :disabled="firstStep">Previous</v-btn>
+    <v-banner min-height="120" class="banner-position my-3" v-if="showBanner || hideHeader">
+        <v-container>
+            <v-row>
+                <v-col cols="2" class="text-left">
+                    <v-btn @click="prevStep" :disabled="firstStep"><v-icon icon="mdi-arrow-left-thick"></v-icon></v-btn>
                 </v-col>
-                <v-col class="text-center">
-                    <v-chip color="primary" variant="flat" class="mb-2">
+                <v-col cols="8" class="text-center">
+                    <v-chip color="primary" variant="flat">
                         {{ currentStatus.status }}
                     </v-chip>
+                </v-col>
+                <v-col cols="2" class="text-right"> <v-btn @click="nextStep" :disabled="lastStep"><v-icon
+                            icon="mdi-arrow-right-thick"></v-icon></v-btn></v-col>
+            </v-row>
+            <v-row>
+                <v-col class="text-center">
                     <p>{{ currentStatus.description }}</p>
                 </v-col>
-                <v-col cols="auto" class="d-flex align-center"> <v-btn size="small" @click="nextStep"
-                        :disabled="lastStep">Next</v-btn></v-col>
             </v-row>
-        </v-banner>
-    </v-container>
+        </v-container>
+
+    </v-banner>
 </template>
 <style scoped>
 .banner-position {
     position: sticky;
-    top: 0;
+    top: 64px;
     /**use 64px if top menu bar doesn't hide on scroll. otherwise use 0 */
     z-index: 100;
     padding: 0px;
