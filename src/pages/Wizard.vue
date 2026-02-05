@@ -1,146 +1,172 @@
 <template>
-    <div class="mt-12 d-flex align-center justify-center">
-        <div class="text-h5 mr-2">Electronic Workflow Wizard </div>
-        <tooltip tipLocation="wizardHeading" type="info"></tooltip>
-    </div>
-    <v-container>
-        <v-row justify="center" align="center">
-            <v-col cols="12" md="6">
-                <v-card title="Scenario Information">
-                    <v-card-subtitle class="text-wrap">Please answer all questions below to see the proposed workflow
-                        steps.</v-card-subtitle>
-                    <v-card-text>
-                        <div :class=questionTitleClasses>Generator</div>
-                        <div class="pl-4">
-                            <v-label class="text-wrap">Does the Generator have an EPA ID Number?<tooltip
-                                    tipLocation="vsqg" type="info" :link="hwipLink" linkText="RCRAInfo Hazardous Waste Information Platform"></tooltip>
-                            </v-label>
-                            <v-radio-group v-model="selectedVsqg">
-                                <v-radio label="Yes" value="Yes"></v-radio>
-                                <v-radio label="No" value="No"></v-radio>
-                            </v-radio-group>
-                        </div>
-                        <div class="pl-4">
-                            <v-label class="text-wrap">How do you want the generator to sign?
-                            </v-label>
-                            <v-radio-group v-model="selectedSigMethod">
-                                <v-radio v-for="option in genSigMethods" :key="option.value" :label="option.text"
-                                    :value="option.value"></v-radio>
-                            </v-radio-group>
-                        </div>
-                        <v-alert v-if="electronicNoGenIdScenario" type="warning" class="mb-4">
-                            Since the generator does not have an EPA ID Number and you indicated it will sign
-                            electronically, it must
-                            obtain an EPA ID Number first before shipping waste. If the generator location state does
-                            not
-                            require VSQGs to obtain ID numbers and the generator does not intend to
-                            obtain an ID Number, please change the signing option to "{{ getItemText(genSigMethods,
-                                'paper') }}" in order to initiate the shipment.
-                        </v-alert>
+    <v-container class="py-12">
+        <v-row justify="center">
+            <v-col cols="12" md="8" lg="7">
+                <div class="d-flex align-center justify-center flex-column">
+                    <div class="d-flex align-center">
+                        <div class="text-h5 mr-2">Electronic Workflow Wizard</div>
+                        <tooltip tipLocation="wizardHeading" type="info" />
+                    </div>
+                </div>
+                <v-tabs v-model="tab" color="primary" fixed-tabs class="mt-4" v-if="tabsEnabled">
+                    <v-tab value="workflow">Workflow</v-tab>
+                    <v-tab value="generator" @click="resetGeneratorNow">Generator</v-tab>
+                </v-tabs>
 
-                        <div :class=questionTitleClasses>Transporter</div>
-                        <div class="pl-4">
-                            <v-label class="text-wrap">Is there more than 1 transporter?</v-label>
-                            <v-radio-group v-model="selectedTransporter">
-                                <v-radio label="Yes" value="Yes"></v-radio>
-                                <v-radio label="No" value="No"></v-radio>
-                            </v-radio-group>
-                        </div>
+                <v-tabs-window v-model="tab">
+                    <v-window-item value="generator">
+                        <generator-wizard ref="genRef"></generator-wizard>
+                    </v-window-item>
+                    <v-window-item value="workflow">
+                        <v-card title="Workflow Scenario Information">
+                            <v-card-subtitle class="text-wrap">Please answer all questions below to see the
+                                proposed workflow steps.</v-card-subtitle>
+                            <v-card-text>
+                                <div :class=questionTitleClasses>Generator</div>
+                                <v-radio-group v-model="selectedVsqg">
+                                    <template #label>
+                                        <div class="d-inline-flex align-center flex-wrap">
+                                            <span class="mr-1 text-wrap">Does the Generator have an EPA ID
+                                                Number?</span>
+                                            <tooltip tipLocation="vsqg" type="info" :link="hwipLink"
+                                                linkText="RCRAInfo Hazardous Waste Information Platform" />
+                                        </div>
+                                    </template>
+                                    <v-radio label="Yes" value="Yes"></v-radio>
+                                    <v-radio label="No" value="No"></v-radio>
+                                </v-radio-group>
+                                <v-radio-group v-model="selectedSigMethod">
+                                    <template #label><span class="text-wrap">How do you want the generator to
+                                            sign?</span></template>
+                                    <v-radio v-for="option in genSigMethods" :key="option.value" :label="option.text"
+                                        :value="option.value"></v-radio>
+                                </v-radio-group>
 
-                        <div :class=questionTitleClasses>Creator</div>
-                        <div class="pl-4">
-                            <v-label class="text-wrap">Which party is creating the manifest electronically?
-                            </v-label>
-                            <v-radio-group v-model="selectedParty">
-                                <v-radio v-for="option in parties" :key="option.value" :label="option.text"
-                                    :value="option.value"></v-radio>
-                            </v-radio-group>
-                        </div>
+                                <v-alert v-if="electronicNoGenIdScenario" type="warning" class="mb-4">
+                                    Since the generator does not have an EPA ID Number and you indicated it
+                                    will sign
+                                    electronically, it must
+                                    obtain an EPA ID Number first before shipping waste. If the generator
+                                    location state
+                                    does
+                                    not
+                                    require VSQGs to obtain ID numbers and the generator does not intend to
+                                    obtain an ID Number, please change the signing option to "{{
+                                        getItemText(genSigMethods,
+                                            'paper') }}" in order to initiate the shipment.
+                                </v-alert>
 
-                        <div class="pl-4">
-                            <v-label class="text-wrap">How are they creating it?
-                            </v-label>
-                            <v-radio-group v-model="selectedCreateMethod">
-                                <v-radio v-for="option in createMethods" :key="option.value" :label="option.text"
-                                    :value="option.value"></v-radio>
-                            </v-radio-group>
+                                <div :class=questionTitleClasses>Transporter</div>
+                                <v-radio-group v-model="selectedTransporter">
+                                    <template #label><span class="text-wrap">Is there more than 1
+                                            transporter?</span></template>
+                                    <v-radio label="Yes" value="Yes"></v-radio>
+                                    <v-radio label="No" value="No"></v-radio>
+                                </v-radio-group>
+
+                                <div :class=questionTitleClasses>Creator</div>
+                                <v-radio-group v-model="selectedParty">
+                                    <template #label><span class="text-wrap">Which party is creating the manifest
+                                            electronically?</span></template>
+                                    <v-radio v-for="option in parties" :key="option.value" :label="option.text"
+                                        :value="option.value"></v-radio>
+                                </v-radio-group>
+                                <v-radio-group v-model="selectedCreateMethod">
+                                    <template #label><span class="text-wrap">How are they creating it?</span></template>
+                                    <v-radio v-for="option in createMethods" :key="option.value" :label="option.text"
+                                        :value="option.value"></v-radio>
+                                </v-radio-group>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-btn v-if="showQuickFill" @click="quickFill">Quick Fill</v-btn>
+                                <v-btn @click="reset">Reset</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                        <div v-if="allFieldsFilled" class="pt-0" id="stepSection">
+                            <v-card v-if="selectedParty && selectedCreateMethod && selectedSigMethod" class="mb-4">
+                                <v-card-title>
+                                    <v-icon color="warning" icon="mdi-alert-circle mr-4"></v-icon>Prerequisites
+                                </v-card-title>
+                                <v-card-text class="ml-12">
+                                    The following parties must have a registered user to participate in the
+                                    worklow:
+                                    <ul class="ml-5">
+                                        <li v-for="item in preStep">{{ item }}
+                                            <span v-if="item === 'Generator' && electronicNoGenIdScenario">{{
+                                                genIdText
+                                                }}</span>
+                                        </li>
+                                    </ul>
+                                    <div v-if="selectedSigMethod.value === 'paper'" class="mt-2">
+                                        Since you indicated that the generator is signing on paper, the
+                                        generator does not
+                                        need an
+                                        account for signing, but Large and Small Quantity Generators must
+                                        maintain an account to access final signed manifests from receiving
+                                        facilities, submit post-receipt data corrections requested by
+                                        regulators, and submit
+                                        exception
+                                        reports electronically via e-Manifest. </div>
+                                    <v-alert class="mt-2" border="start" border-color="blue accent-4">Create an
+                                        account in
+                                        <a href="https://rcrainfo.epa.gov/" target="_blank">RCRAInfo<v-icon
+                                                icon="mdi-open-in-new" size="18"></v-icon></a>, then request
+                                        permission to
+                                        your party's EPA ID(s).
+                                    </v-alert>
+                                    <div v-if="selectedCreateMethod.value === 'external'" class="mt-3">
+                                        To integrate with e-Manifest from an external system you need Site
+                                        Management permission to your EPA ID Number and will need to generate an
+                                        API ID and
+                                        Key from
+                                        the
+                                        RCRAInfo.</div>
+                                </v-card-text>
+                            </v-card>
+                            <v-card v-for="(step, i) in activeSteps" class="my-4">
+                                <v-card-title>
+                                    <v-chip class="font-weight-bold mr-2">
+                                        {{ i + 1 }}
+                                    </v-chip>
+                                    {{ step.title }}
+                                </v-card-title>
+                                <v-card-text class="ml-12">
+                                    {{ step.text }}
+                                    <div v-if="step.print">
+                                        <ul class="ml-5">
+                                            <li><span v-if="selectedSigMethod === 'paper'">1st Copy: </span>To
+                                                comply with
+                                                DOT
+                                                requirement to carry a shipping paper</li>
+                                            <li v-if="selectedSigMethod === 'paper'">2nd Copy: For generator and
+                                                initial
+                                                transporter to
+                                                sign - generator retains for recordkeeping</li>
+                                        </ul>
+                                        <v-alert class="my-2" border="start" border-color="blue accent-4">
+                                            This step can occur later, but must happen before the waste leaves
+                                            the generator
+                                            site. Copies can be printed by any party. There are <a href="#"
+                                                @click.prevent="printDialog = true">two options</a> for printing
+                                            the
+                                            manifest.
+                                            Copies may be marked up to match shipment
+                                            actuals, but these changes must be updated in e-Manifest before
+                                            the first party's signature.
+                                        </v-alert>
+                                    </div>
+                                    <div v-if="step.signature">
+                                        <v-btn color="primary" size="small" @click="dialog = true" class="mt-2"><v-icon
+                                                icon="mdi-file-sign" class="mr-2"></v-icon>Signature Options</v-btn>
+                                    </div>
+                                    <div v-if="step.video" class="mt-4">
+                                        <video-button :url="step.url"></video-button>
+                                    </div>
+                                </v-card-text>
+                            </v-card>
                         </div>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-btn v-if="showQuickFill" @click="quickFill">Quick Fill</v-btn>
-                        <v-btn @click="reset">Reset</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-col>
-        </v-row>
-    </v-container>
-    <v-container v-if="allFieldsFilled" class="pt-0" id="stepSection">
-        <v-row justify="center" align="center">
-            <v-col cols="12" md="6">
-                <v-card v-if="selectedParty && selectedCreateMethod && selectedSigMethod" class="mb-4">
-                    <v-card-title>
-                        <v-icon color="warning" icon="mdi-alert-circle mr-4"></v-icon>Prerequisites
-                    </v-card-title>
-                    <v-card-text class="ml-12">
-                        The following parties must have a registered user to participate in the worklow:
-                        <ul class="ml-5">
-                            <li v-for="item in preStep">{{ item }}
-                                <span v-if="item === 'Generator' && electronicNoGenIdScenario">{{ genIdText }}</span>
-                            </li>
-                        </ul>
-                        <div v-if="selectedSigMethod.value === 'paper'" class="mt-2">
-                            Since you indicated that the generator is signing on paper, the generator does not need an
-                            account for signing, but Large and Small Quantity Generators must
-                            maintain an account to access final signed manifests from receiving
-                            facilities, submit post-receipt data corrections requested by regulators, and submit
-                            exception
-                            reports electronically via e-Manifest. </div>
-                        <v-alert class="mt-2" border="start" border-color="blue accent-4">Create an account in <a
-                                href="https://rcrainfo.epa.gov/" target="_blank">RCRAInfo<v-icon icon="mdi-open-in-new"
-                                    size="18"></v-icon></a>, then request permission to your party's EPA ID(s).
-                        </v-alert>
-                        <div v-if="selectedCreateMethod.value === 'external'" class="mt-3">
-                            To integrate with e-Manifest from an external system you need Site
-                            Management permission to your EPA ID Number and will need to generate an API ID and Key from
-                            the
-                            RCRAInfo.</div>
-                    </v-card-text>
-                </v-card>
-                <v-card v-for="(step, i) in activeSteps" class="my-4">
-                    <v-card-title>
-                        <v-chip class="font-weight-bold mr-2">
-                            {{ i + 1 }}
-                        </v-chip>
-                        {{ step.title }}
-                    </v-card-title>
-                    <v-card-text class="ml-12">
-                        {{ step.text }}
-                        <div v-if="step.print">
-                            <ul class="ml-5">
-                                <li><span v-if="selectedSigMethod === 'paper'">1st Copy: </span>To comply with DOT
-                                    requirement to carry a shipping paper</li>
-                                <li v-if="selectedSigMethod === 'paper'">2nd Copy: For generator and initial
-                                    transporter to
-                                    sign - generator retains for recordkeeping</li>
-                            </ul>
-                            <v-alert class="my-2" border="start" border-color="blue accent-4">
-                                This step can occur later, but must happen before the waste leaves the generator
-                                site. Copies can be printed by any party. There are <a href="#"
-                                    @click.prevent="printDialog = true">two options</a> for printing the manifest.
-                                Copies may be marked up to match shipment
-                                actuals, but these changes must be updated in e-Manifest before
-                                the first party's signature.
-                            </v-alert>
-                        </div>
-                        <div v-if="step.signature">
-                            <v-btn color="primary" size="small" @click="dialog = true" class="mt-2"><v-icon
-                                    icon="mdi-file-sign" class="mr-2"></v-icon>Signature Options</v-btn>
-                        </div>
-                        <div v-if="step.video" class="mt-4">
-                            <video-button :url="step.url"></video-button>
-                        </div>
-                    </v-card-text>
-                </v-card>
+                    </v-window-item>
+                </v-tabs-window>
             </v-col>
         </v-row>
     </v-container>
@@ -242,6 +268,10 @@ import { useGoTo } from 'vuetify'
 import Tooltip from '../components/Tooltip.vue';
 import VideoButton from '@/components/VideoButton.vue';
 import VideoDialog from '@/components/VideoDialog.vue';
+import GeneratorWizard from '@/components/GeneratorWizard.vue';
+
+const tabsEnabled = import.meta.env.DEV
+
 
 const goTo = useGoTo()
 
@@ -268,6 +298,25 @@ const createMethods = [
 const genSigMethods = [
     { value: 'electronic', text: 'Electronically' },
     { value: 'paper', text: 'On paper (Hybrid)' }]
+
+
+const tab = ref('workflow')
+const genRef = ref(null)
+
+watch(
+    () => tab.value,
+    (to, from) => {
+        // reset when navigating to "generator"
+        if (to === 'generator' && from !== 'generator') {
+            genRef.value?.reset()
+        }
+    }
+)
+
+function resetGeneratorNow() {
+    // handles clicking the same tab when already active
+    genRef.value?.reset()
+}
 
 /**
  * REFS FOR DROPDOWNS/MODAL

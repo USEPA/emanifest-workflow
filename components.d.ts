@@ -11,6 +11,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    GeneratorWizard: typeof import('./src/components/GeneratorWizard.vue')['default']
     LabelField: typeof import('./src/components/LabelField.vue')['default']
     LabelRequired: typeof import('./src/components/LabelRequired.vue')['default']
     NavBar: typeof import('./src/components/NavBar.vue')['default']
@@ -20,6 +21,7 @@ declare module 'vue' {
     Tooltip: typeof import('./src/components/Tooltip.vue')['default']
     VideoButton: typeof import('./src/components/VideoButton.vue')['default']
     VideoDialog: typeof import('./src/components/VideoDialog.vue')['default']
+    WasteCodes: typeof import('./src/components/WasteCodes.vue')['default']
     WasteInfo: typeof import('./src/components/WasteInfo.vue')['default']
   }
 }
