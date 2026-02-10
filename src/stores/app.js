@@ -6,36 +6,36 @@ export const useAppStore = defineStore('app', {
     steps: [
       {
         order: 1, value: 'Draft', status: 'Draft',
-        description: 'At least one handler (generator, transporter, or designated facility) must be added to the manifest. The manifest is only accessible to the party that creates it.'
+        description: 'At least one handler (generator, transporter, or designated facility) must be added to the manifest. The manifest is only accessible to the party that creates it.',
       },
       {
         order: 2, value: 'Pending', status: 'Pending',
-        description: 'At least one handler must be added to the manifest. The manifest is editable and viewable to all parties selected on the manifest.'
+        description: 'At least one handler must be added to the manifest. The manifest is editable and viewable to all parties selected on the manifest.',
       },
       {
         order: 3, value: 'Scheduled', status: 'Scheduled',
-        description: 'All handlers and draft waste information are required. The official DOT-compliant shipping paper can be printed from the system.'
+        description: 'All handlers and draft waste information are required. The official DOT-compliant shipping paper can be printed from the system.',
       },
       {
         order: 4, value: 'GenSig', status: 'Generator Signature',
-        description: 'The final waste information must be provided before the generator signs the manifest. If using a Hybrid manifest, the printed copy may be edited and must match actual waste information.'
+        description: 'The final waste information must be provided before the generator signs the manifest. If using a Hybrid manifest, the printed copy may be edited and must match actual waste information.',
       },
       {
         order: 5, value: 'TSig', status: 'Transporter Signature',
-        description: 'Generator must sign prior to initial transporter signature. If using a Hybrid manifest, the transporter must provide the final waste informaiton, generator signer\'s name and date, and any other changes prior to signing.'
+        description: 'Generator must sign prior to initial transporter signature. If using a Hybrid manifest, the transporter must provide the final waste informaiton, generator signer\'s name and date, and any other changes prior to signing.',
       },
       {
         order: 6, value: 'InTransit', status: 'In Transit',
-        description: 'Additional transporters can be added and they must sign in the order they are listed on the manifest.'
+        description: 'Additional transporters can be added and they must sign in the order they are listed on the manifest.',
       },
       {
         order: 7, value: 'TsdfReceipt', status: 'TSDF Receipt',
-        description: 'The designated facility may sign once the final transporter has signed. The status in the system is Ready For Signature prior to signing. After signature the status will be Signed.'
+        description: 'The designated facility may sign once the final transporter has signed. The status in the system is Ready For Signature prior to signing. After signature the status will be Signed.',
       },
       {
         order: 8, value: 'Submit', status: 'Final Submission',
-        description: 'Management Method Codes are required for federal hazardous waste. The status in the system will be either Ready For Signature or Signed before final signature. After signature the status will be Signed.'
-      }
+        description: 'Management Method Codes are required for federal hazardous waste. The status in the system will be either Ready For Signature or Signed before final signature. After signature the status will be Signed.',
+      },
     ],
     currentStep: 0,
     fields: {
@@ -49,14 +49,14 @@ export const useAppStore = defineStore('app', {
         siteAddress: { id: 'genSiteAddress', label: 'Site Address', required: 'Scheduled', populate: 'Draft', value: '321 W Broad St \r Fairfax, VA 22033', locked: 'GenSig' },
         signature: {
           name: { id: 'genSigName', label: 'Name', required: 'GenSig', value: 'Gen Erator', locked: 'GenSig' },
-          date: { id: 'genSigDate', label: 'Date', required: 'GenSig', value: '10/20/2025', locked: 'GenSig' }
-        }
+          date: { id: 'genSigDate', label: 'Date', required: 'GenSig', value: '10/20/2025', locked: 'GenSig' },
+        },
       },
       transporter: {
         signature: {
           name: { id: 'transporterSigName', label: 'Name', required: 'TSig', value: 'Trans Porter', locked: 'TSig' },
-          date: { id: 'transporterSigDate', label: 'Date', required: 'TSig', value: '10/20/2025', locked: 'TSig' }
-        }
+          date: { id: 'transporterSigDate', label: 'Date', required: 'TSig', value: '10/20/2025', locked: 'TSig' },
+        },
       },
       tsdf: {
         epaId: { id: 'tsdfId', label: 'EPA ID Number', required: 'Scheduled', value: 'NC123456789', locked: 'TsdfReceipt' },
@@ -65,8 +65,8 @@ export const useAppStore = defineStore('app', {
         siteAddress: { id: 'tsdfSiteAddress', label: 'Site Address', required: 'Scheduled', value: '321 W Broad St \r Raleigh, NC 21155', locked: 'TsdfReceipt' },
         signature: {
           name: { id: 'tsdfSigName', label: 'Name', required: 'TsdfReceipt', value: 'T SDF', locked: 'TsdfReceipt' },
-          date: { id: 'tsdfSigDate', label: 'Date', required: 'TsdfReceipt', value: '10/25/2025', locked: 'TsdfReceipt' }
-        }
+          date: { id: 'tsdfSigDate', label: 'Date', required: 'TsdfReceipt', value: '10/25/2025', locked: 'TsdfReceipt' },
+        },
       },
       waste: {
         line: { optional: true },
@@ -76,12 +76,12 @@ export const useAppStore = defineStore('app', {
         containerType: { id: 'containerType', required: 'Scheduled', label: 'Container Type' },
         quantity: { id: 'quantity', required: 'Scheduled', label: 'Total Quantity' },
         uom: { id: 'uom', required: 'Scheduled', label: 'Unit Of Measure' },
-        wasteCodes: { id: 'wasteCodes', required: 'Scheduled', label: 'Waste Codes' }
+        wasteCodes: { id: 'wasteCodes', required: 'Scheduled', label: 'Waste Codes' },
       },
-      managemementMethod1: { id: 'managemementMethod1', label: "1", required: 'Submit', value: 'H040' },
-      managemementMethod2: { id: 'managemementMethod2', label: "2", required: 'Submit', value: 'H041' },
-      managemementMethod3: { id: 'managemementMethod3', label: "3", required: 'Submit', value: '' },
-      managemementMethod4: { id: 'managemementMethod4', label: "4", required: 'Submit', value: '' }
+      managemementMethod1: { id: 'managemementMethod1', label: '1', required: 'Submit', value: 'H040' },
+      managemementMethod2: { id: 'managemementMethod2', label: '2', required: 'Submit', value: 'H041' },
+      managemementMethod3: { id: 'managemementMethod3', label: '3', required: 'Submit', value: '' },
+      managemementMethod4: { id: 'managemementMethod4', label: '4', required: 'Submit', value: '' },
     },
     tooltips: {
       mtn: 'The manifest tracking number is generated by the e-Manifest system',
@@ -92,7 +92,7 @@ export const useAppStore = defineStore('app', {
       tsdfWarning: 'The designated facility generally should not be changed after generator signature with exception to situations allowed in the regulations',
       workflowHeading: 'This page demonstrates when information is required and is able to be edited on the manifest. Use the Previous and Next buttons to navigate between the events.',
       wizardHeading: 'This page provides general guidance and does not cover all scenarios. Please consult the regulations and system documentation for futher information.',
-      vsqg: 'If you are unsure if you have an EPA ID Number, access '
+      vsqg: 'If you are unsure if you have an EPA ID Number, access ',
     },
     linksMenu: [
       { text: 'RCRAInfo Production', url: 'https://rcrainfo.epa.gov/' },
@@ -100,34 +100,34 @@ export const useAppStore = defineStore('app', {
       { text: 'System Demo Videos', url: 'https://www.epa.gov/e-manifest/e-manifest-demonstration-videos' },
       { text: 'Industry Help', url: 'https://rcrainfo.epa.gov/rcrainfo-help/application/industryHelp/index.htm#t=SiteDashboard%2FEManifest%2FUG-eManifestIntroduction.htm' },
       { text: 'FAQs', url: 'https://www.epa.gov/e-manifest/frequent-questions-about-e-manifest' },
-      { text: 'RCRAInfo Hazardous Waste Information Platform (HWIP)', url: 'https://rcrapublic.epa.gov/rcra-hwip' }
-    ]
+      { text: 'RCRAInfo Hazardous Waste Information Platform (HWIP)', url: 'https://rcrapublic.epa.gov/rcra-hwip' },
+    ],
   }),
   getters: {
-    lookupStatus: (state) => (value) => {
+    lookupStatus: state => value => {
       return state.steps.find(step => step.value == value)
     },
-    lookupStatusId: (state) => (value) => {
+    lookupStatusId: state => value => {
       return state.steps.find(step => step.value == value).order
     },
-    currentStatus: (state) => {
+    currentStatus: state => {
       return state.steps.find(step => step.order == state.currentStep + 1)
     },
-    lookupField: (state) => (field) => {
+    lookupField: state => field => {
       if (field.includes('.')) {
         return field.split('.').reduce((acc, part) => {
-          return acc && typeof acc === 'object' && acc[part] !== undefined ? acc[part] : undefined;
-        }, state.fields);
+          return acc && typeof acc === 'object' && acc[part] !== undefined ? acc[part] : undefined
+        }, state.fields)
       }
       return state.fields[field]
     },
-    getTooltip: (state) => (tip) => {
+    getTooltip: state => tip => {
       return state.tooltips[tip]
-    }
+    },
   },
   actions: {
-    resetSteps() {
+    resetSteps () {
       this.currentStep = 0
-    }
-  }
+    },
+  },
 })

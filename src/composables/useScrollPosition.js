@@ -1,19 +1,19 @@
-import { ref, onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue'
 
-export function useScrollPosition() {
-  const scrollY = ref(0);
+export function useScrollPosition () {
+  const scrollY = ref(0)
 
   const handleScroll = () => {
-    scrollY.value = window.scrollY;
-  };
+    scrollY.value = window.scrollY
+  }
 
   onMounted(() => {
-    window.addEventListener('scroll', handleScroll);
-  });
+    window.addEventListener('scroll', handleScroll)
+  })
 
   onUnmounted(() => {
-    window.removeEventListener('scroll', handleScroll);
-  });
+    window.removeEventListener('scroll', handleScroll)
+  })
 
-  return { scrollY };
+  return { scrollY }
 }

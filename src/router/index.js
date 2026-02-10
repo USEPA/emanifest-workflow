@@ -4,18 +4,18 @@
  * Automatic routes for `./src/pages/*.vue`
  */
 
+import { setupLayouts } from 'virtual:generated-layouts'
 // Composables
 import { createRouter, createWebHistory } from 'vue-router'
-import { setupLayouts } from 'virtual:generated-layouts'
 import { routes } from 'vue-router/auto-routes'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: setupLayouts(routes),
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior (to, from, savedPosition) {
     // always scroll to top
     return { top: 0 }
-  }
+  },
 })
 
 // Workaround for https://github.com/vitejs/vite/issues/11804

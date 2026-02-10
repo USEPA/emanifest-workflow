@@ -20,7 +20,7 @@ declare module 'vue-router/auto-routes' {
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/Basics': RouteRecordInfo<'/Basics', '/Basics', Record<never, never>, Record<never, never>>,
-    '/GeneratorWizard': RouteRecordInfo<'/GeneratorWizard', '/GeneratorWizard', Record<never, never>, Record<never, never>>,
+    '/Generator-Wizard': RouteRecordInfo<'/Generator-Wizard', '/Generator-Wizard', Record<never, never>, Record<never, never>>,
     '/Home': RouteRecordInfo<'/Home', '/Home', Record<never, never>, Record<never, never>>,
     '/Manifest': RouteRecordInfo<'/Manifest', '/Manifest', Record<never, never>, Record<never, never>>,
     '/Wizard': RouteRecordInfo<'/Wizard', '/Wizard', Record<never, never>, Record<never, never>>,
@@ -45,8 +45,8 @@ declare module 'vue-router/auto-routes' {
       routes: '/Basics'
       views: never
     }
-    'src/pages/GeneratorWizard.vue': {
-      routes: '/GeneratorWizard'
+    'src/pages/Generator-Wizard.vue': {
+      routes: '/Generator-Wizard'
       views: never
     }
     'src/pages/Home.vue': {

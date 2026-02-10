@@ -1,36 +1,59 @@
 <template>
-    <div class="d-flex align-center">
-        <label v-if="field.label" :for="field.id">{{ field.label }}</label>
-        <tooltip v-if="props.tooltipInfo" :tipLocation="props.tooltipInfo.tipLocation" :type="props.tooltipInfo.type"
-            :status="props.tooltipInfo.status"></tooltip>
-        <v-icon icon="mdi-asterisk" size="x-small" color="red" v-if="required" class="pl-2 pb-2"></v-icon>
-    </div>
-    <v-text-field v-if="props.type == 'text'" :id="field.id" v-model="internalValue" readonly variant="solo-filled">
-        <template #append-inner>
-            <v-tooltip v-if="locked" :text="readOnlyText" location="bottom">
-                <template v-slot:activator="{ props }">
-                    <v-icon v-bind="props" icon="mdi-lock"></v-icon>
-                </template>
-            </v-tooltip>
-            <v-tooltip v-if="signatureRequiredNow" text="Signature Required for this Status" location="bottom">
-                <template v-slot:activator="{ props }">
-                    <v-icon v-bind="props" icon="mdi-draw-pen" color="green-darken-1"></v-icon>
-                </template>
-            </v-tooltip>
-            <span v-if="locked" class="sr-only">{{ readOnlyText }}</span>
+  <div class="d-flex align-center">
+    <label v-if="field.label" :for="field.id">{{ field.label }}</label>
+    <tooltip
+      v-if="props.tooltipInfo"
+      :status="props.tooltipInfo.status"
+      :tip-location="props.tooltipInfo.tipLocation"
+      :type="props.tooltipInfo.type"
+    />
+    <v-icon
+      v-if="required"
+      class="pl-2 pb-2"
+      color="red"
+      icon="mdi-asterisk"
+      size="x-small"
+    />
+  </div>
+  <v-text-field
+    v-if="props.type == 'text'"
+    :id="field.id"
+    v-model="internalValue"
+    readonly
+    variant="solo-filled"
+  >
+    <template #append-inner>
+      <v-tooltip v-if="locked" location="bottom" :text="readOnlyText">
+        <template #activator="{ props: lockedActivator }">
+          <v-icon v-bind="lockedActivator" icon="mdi-lock" />
         </template>
-    </v-text-field>
-    <v-textarea v-if="props.type === 'textarea'" :id="field.id" v-model="internalValue" rows="2" readonly no-resize
-        variant="solo-filled">
-        <template #append-inner>
-            <v-tooltip v-if="locked" :text="readOnlyText" location="bottom">
-                <template v-slot:activator="{ props }">
-                    <v-icon v-bind="props" icon="mdi-lock"></v-icon>
-                </template>
-            </v-tooltip>
-            <span v-if="locked" class="sr-only">{{ readOnlyText }}</span>
+      </v-tooltip>
+      <v-tooltip v-if="signatureRequiredNow" location="bottom" text="Signature Required for this Status">
+        <template #activator="{ props: signActivator }">
+          <v-icon v-bind="signActivator" color="green-darken-1" icon="mdi-draw-pen" />
         </template>
-    </v-textarea>
+      </v-tooltip>
+      <span v-if="locked" class="sr-only">{{ readOnlyText }}</span>
+    </template>
+  </v-text-field>
+  <v-textarea
+    v-if="props.type === 'textarea'"
+    :id="field.id"
+    v-model="internalValue"
+    no-resize
+    readonly
+    rows="2"
+    variant="solo-filled"
+  >
+    <template #append-inner>
+      <v-tooltip v-if="locked" location="bottom" :text="readOnlyText">
+        <template #activator="{ props:readOnlyActivator }">
+          <v-icon v-bind="readOnlyActivator" icon="mdi-lock" />
+        </template>
+      </v-tooltip>
+      <span v-if="locked" class="sr-only">{{ readOnlyText }}</span>
+    </template>
+  </v-textarea>
 </template>
 <script setup>
 /**
@@ -39,81 +62,78 @@
  * Optionally there is an overRideValue prop that will populate the value that is passed into it
  * Optionally there is tooltipInfo prop - if provided this will display the tooltip component and need the standard props supplied to it coming from the parent
  */
-import { computed } from 'vue'
-import { useAppStore } from '@/stores/app'
+  import { computed } from 'vue'
+  import { useAppStore } from '@/stores/app'
 
-const store = useAppStore();
-const props = defineProps({
+  const store = useAppStore()
+  const props = defineProps({
     name: String,
     type: String,
     overRideValue: { type: [String, Number], default: null },
-    tooltipInfo: Object
-})
+    tooltipInfo: Object,
+  })
 
-const readOnlyText = 'This field is read-only at this point in the workflow'
+  const readOnlyText = 'This field is read-only at this point in the workflow'
 
-const field = store.lookupField(props.name)
+  const field = store.lookupField(props.name)
 
-const internalValue = computed(() => {
-    if (!props.overRideValue) {
-        if (populate.value) {
-            return field.value
-        }
-        else if (required.value) {
-            return field.value
-        } else {
-            return ''
-        }
+  const internalValue = computed(() => {
+    if (props.overRideValue) {
+      return props.overRideValue
     } else {
-        return props.overRideValue
+      if (populate.value) {
+        return field.value
+      } else if (required.value) {
+        return field.value
+      } else {
+        return ''
+      }
     }
-});
+  })
 
-const required = computed(() => {
+  const required = computed(() => {
     if (field.hasOwnProperty('required')) {
-        return store.lookupStatusId(field.required) <= store.currentStep + 1
+      return store.lookupStatusId(field.required) <= store.currentStep + 1
     }
     return false
-})
+  })
 
-const requiredNow = computed(() => {
-    if (field.hasOwnProperty('required')) {
-        if (store.lookupStatusId(field.required) == store.currentStep + 1) {
-            return true
-        }
+  const requiredNow = computed(() => {
+    if (field.hasOwnProperty('required') && store.lookupStatusId(field.required) == store.currentStep + 1) {
+      return true
     }
     return false
-})
+  })
 
-const populate = computed(() => {
+  const populate = computed(() => {
     if (field.hasOwnProperty('populate')) {
-        return store.lookupStatusId(field.populate) <= store.currentStep + 1
+      return store.lookupStatusId(field.populate) <= store.currentStep + 1
     }
     return false
-})
+  })
 
-const locked = computed(() => {
+  const locked = computed(() => {
     if (field.hasOwnProperty('locked')) {
-        return store.lookupStatusId(field.locked) < store.currentStep + 1
+      return store.lookupStatusId(field.locked) < store.currentStep + 1
     }
     return false
-})
+  })
 
-const signatureRequiredNow = computed(() => {
+  const signatureRequiredNow = computed(() => {
     return props.name.includes('signature') && requiredNow.value
-})
+  })
 
 </script>
 <style scoped>
 .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 </style>
