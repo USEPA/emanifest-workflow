@@ -91,7 +91,8 @@ export const useAppStore = defineStore('app', {
       wasteWarning: 'Waste information generally should not be changed after generator signature with exception to situations allowed in the regulations',
       tsdfWarning: 'The designated facility generally should not be changed after generator signature with exception to situations allowed in the regulations',
       workflowHeading: 'This page demonstrates when information is required and is able to be edited on the manifest. Use the Previous and Next buttons to navigate between the events.',
-      wizardHeading: 'This page provides general guidance and does not cover all scenarios. Please consult the regulations and system documentation for futher information.',
+      workflowWizardHeading: 'This page provides general guidance and does not cover all scenarios. Please consult the regulations and system documentation for futher information.',
+      generatorWizardHeading: 'This page provides general guidance and does not cover all scenarios. Please consult the regulations for further information.',
       vsqg: 'If you are unsure if you have an EPA ID Number, access ',
     },
     linksMenu: [

@@ -5,7 +5,7 @@
                 <div class="d-flex align-center justify-center flex-column">
                     <div class="d-flex align-center">
                         <div class="text-h5 mr-2">Electronic Workflow Wizard</div>
-                        <tooltip tip-location="wizardHeading" type="info" />
+                        <tooltip tip-location="workflowWizardHeading" type="info" />
                     </div>
                 </div>
 

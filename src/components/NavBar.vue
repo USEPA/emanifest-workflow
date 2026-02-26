@@ -179,7 +179,7 @@
       title: 'Wizard', shortName: 'Wizards', route: '',
       subItems: [
         { title: 'Manifest Wizard', shortName: 'Manifest Wizard', route: 'wizard', enabled: true },
-        { title: 'Generator Wizard', shortName: 'Generator Wizard', route: 'generator-wizard', enabled: import.meta.env.DEV },
+        { title: 'Generator Wizard', shortName: 'Generator Wizard', route: 'generator-wizard', enabled: true },
       ],
     },
     { title: 'Form Workflow', shortName: 'Workflow', route: 'manifest' },

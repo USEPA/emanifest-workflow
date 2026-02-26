@@ -30,7 +30,7 @@
             </v-card-title>
             <v-card-text>{{ card.description }}</v-card-text>
             <v-card-actions class="pb-4">
-              <v-btn color="primary" :to="card.route" variant="tonal">
+              <v-btn color="primary" :to="`/${card.route}`" variant="tonal">
                 Go
                 <v-icon class="ml-2" icon="mdi-arrow-right-bold" />
               </v-btn>
@@ -63,25 +63,25 @@
     {
       title: 'The Basics',
       description: 'Foundational information about electronic manifests. Learn about requirements, types and signature options.',
-      route: '/basics',
+      route: 'basics',
       enabled: true,
     },
     {
       title: 'Workflow Wizard',
       description: 'Answer some basic questions to find out what each party needs to do in the workflow.',
-      route: '/wizard',
+      route: 'wizard',
       enabled: true,
     },
     {
       title: 'Generator Wizard',
       description: 'Determine generator manifesting requirements based on waste activity.',
-      route: '/generator-wizard',
-      enabled: import.meta.env.DEV,
+      route: 'generator-wizard',
+      enabled: true,
     },
     {
       title: 'Form Workflow',
       description: 'Shows what information is required and can be edited on the form at various points in the workflow.',
-      route: '/manifest',
+      route: 'manifest',
       enabled: true,
     },
   ]
