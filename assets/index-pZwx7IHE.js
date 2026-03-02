@@ -1,1 +1,0 @@
-import o from"./Home-DtDOMbb2.js";import{o as r,c as e}from"./index-D-qlcTYu.js";import"./VSheet-CRoDSOQW.js";import"./VRow-B7vYQ0-O.js";const s={__name:"index",setup(t){return(c,m)=>(r(),e(o))}};export{s as default};
