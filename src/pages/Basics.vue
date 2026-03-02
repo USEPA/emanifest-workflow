@@ -154,11 +154,8 @@
   import { useDisplay } from 'vuetify'
   import VideoButton from '@/components/VideoButton.vue'
   import VideoDialog from '@/components/VideoDialog.vue'
-  import { useThemeStore } from '@/stores/themeStore'
 
   const { mdAndUp } = useDisplay()
-
-  const themeStore = useThemeStore()
 
   // dynamic width for content based on screen width
   const pageWidth = computed(() => {

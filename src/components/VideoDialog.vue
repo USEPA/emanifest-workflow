@@ -12,11 +12,11 @@
           />
           <iframe
             v-show="!isLoading"
-             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
             class="video-iframe"
             frameborder="0"
             height="315"
-             allowfullscreen
             referrerpolicy="strict-origin-when-cross-origin"
             :src="videoUrl"
             title="YouTube video player"

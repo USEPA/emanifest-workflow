@@ -1,5 +1,5 @@
 # e-Manifest Workflow
-This application demonstrates the electronic manifest workflow, showing what information is required at various points in the workflow.
+This application provides documentation and interactive tools to assist with implementing the electronic workflow for the EPA Uniform Hazardous Waste Manifest.
 
 ## Requirements
 NodeJS [Download](https://nodejs.org/en/download)
@@ -14,9 +14,17 @@ npm run dev
 ```
 The application will be available in your browser at `http://localhost:3000/`
 
+## Linting
+```shell
+npm run lint
+```
 ## Buidling and Previewing
+To initiate a build, run:
 ```shell
 npm run build
+```
+After the build is complete, run:
+```shell
 npm run preview
 ```
 The application will be available in your browser at the default Vite port  `http://localhost:4173`

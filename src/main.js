@@ -1,35 +1,30 @@
 /**
  * main.js
  *
- * Bootstraps Vuetify and other plugins then mounts the App`
+ * Bootstraps Vuetify and other plugins then mounts the App
  */
 
-// Composables
 import { createApp } from 'vue'
-
-// Plugins
 import { registerPlugins } from '@/plugins'
-
-// Components
+import router from '@/router'
 import App from './App.vue'
 
-// Styles
 import 'unfonts.css'
 
 const app = createApp(App)
 registerPlugins(app)
-app.mount('#app')
 
-// run axe-core to detect accessibility issues
-if (import.meta.env.MODE === 'development') {
-  // Delay to let Vuetify fully render
-  setTimeout(async () => {
-    const axe = (await import('axe-core')).default
-    axe.run(document.body, {}, (err, results) => {
-      if (err) {
-        throw err
-      }
-      console.log('Accessibility violations:', results.violations)
+if (import.meta.env.DEV && typeof window !== 'undefined') {
+  // Dynamically load the dev-only axe plugin, then mount
+  import('@/plugins/axe.dev')
+    .then(({ default: axePlugin }) => {
+      app.use(axePlugin, { router })
+      app.mount('#app')
     })
-  }, 3000) // 1.5s delay ensures Vuetify has rendered
+    .catch(error => {
+      console.error('Failed to load axe plugin', error)
+      app.mount('#app')
+    })
+} else {
+  app.mount('#app')
 }
