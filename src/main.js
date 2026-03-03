@@ -8,11 +8,19 @@ import { createApp } from 'vue'
 import { registerPlugins } from '@/plugins'
 import router from '@/router'
 import App from './App.vue'
+import { configure } from 'vue-gtag'
 
 import 'unfonts.css'
 
 const app = createApp(App)
 registerPlugins(app)
+
+if (import.meta.env.PROD) {
+  configure({
+    tagId: import.meta.env.VITE_GA_MEASUREMENT_ID,
+    pageTracker: { router }
+  })
+}
 
 if (import.meta.env.DEV && typeof window !== 'undefined') {
   // Dynamically load the dev-only axe plugin, then mount
