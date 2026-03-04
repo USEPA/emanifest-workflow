@@ -17,7 +17,7 @@ registerPlugins(app)
 
 if (import.meta.env.PROD) {
   configure({
-    tagId: import.meta.env.VITE_GA_MEASUREMENT_ID,
+    tagId: 'G-B2MLHRGDBS',
     pageTracker: { router,
       
      }
