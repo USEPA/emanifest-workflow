@@ -31,7 +31,7 @@
               <v-radio label="No" value="No" />
             </v-radio-group>
             <v-radio-group v-model="selectedSigMethod">
-              <template #label><span class="text-wrap">How do you want the generator to
+              <template #label><span class="text-wrap">How does the generator intend to
                 sign?</span></template>
               <v-radio
                 v-for="option in genSigMethods"
