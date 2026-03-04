@@ -1,0 +1,1 @@
+import o from"./Home-DgQoKYUN.js";import{o as r,c as e}from"./index-C_T41lsi.js";import"./VSheet-DbmuFCgF.js";import"./VRow-BzRPT7N2.js";const s={__name:"index",setup(t){return(c,m)=>(r(),e(o))}};export{s as default};
