@@ -103,6 +103,7 @@ export const useAppStore = defineStore('app', {
       { text: 'FAQs', url: 'https://www.epa.gov/e-manifest/frequent-questions-about-e-manifest' },
       { text: 'RCRAInfo Hazardous Waste Information Platform (HWIP)', url: 'https://rcrapublic.epa.gov/rcra-hwip' },
     ],
+    feedbackLink: 'https://rcrainfo.atlassian.net/helpcenter/ris/portal/8',
   }),
   getters: {
     lookupStatus: state => value => {

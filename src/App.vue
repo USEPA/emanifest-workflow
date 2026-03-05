@@ -4,7 +4,7 @@
     <v-main class="pa-0">
       <router-view />
     </v-main>
-    <v-footer :color="themeStore.themeColor"><v-btn :href="encodedFeedbackString" variant="text">
+    <v-footer :color="themeStore.themeColor"><v-btn :href="appStore.feedbackLink" target="_blank" variant="text">
       Feedback</v-btn></v-footer>
   </v-app>
 </template>
@@ -14,9 +14,11 @@
   import { useTheme } from 'vuetify'
   import NavBar from './components/NavBar.vue'
   import { useThemeStore } from './stores/themeStore'
-
+  import { useAppStore } from './stores/app'
+  
   const theme = useTheme()
   const themeStore = useThemeStore()
+  const appStore = useAppStore()
 
   watch(
     () => themeStore.themeName,
@@ -24,9 +26,5 @@
       theme.global.name.value = newTheme
     },
   )
-
-  const emailAddress = 'markley.kyle@epa.gov'
-  const subjectLine = 'e-Manifest Workflow Feedback'
-  const encodedFeedbackString = encodeURI(`mailto:${emailAddress}?subject=${subjectLine}`)
 
 </script>
